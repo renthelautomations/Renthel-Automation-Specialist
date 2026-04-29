@@ -557,11 +557,10 @@ function TechStack({ theme }: { theme: string }) {
   const rows = useMemo(() => {
     const all = TECH_STACK;
     const rev = [...TECH_STACK].reverse();
-    const rot = [...TECH_STACK.slice(9), ...TECH_STACK.slice(0, 9)];
-    return [all, rev, rot].map(r => [...r, ...r]);
+    return [all, rev].map(r => [...r, ...r]);
   }, []);
 
-  const rowClasses = ['tech-row-1', 'tech-row-2', 'tech-row-3'];
+  const rowClasses = ['tech-row-1', 'tech-row-2'];
 
   return (
     <section id="stack" style={{ padding: 'var(--section-padding) 0', background: 'var(--bg)' }}>
@@ -2962,10 +2961,11 @@ export default function App() {
       <main>
         <Hero />
         <LogoMarquee />
+        <About />
+        <TechStack theme={theme} />
         <Workflows />
         <CaseStudies theme={theme} />
         <Process />
-        <TechStack theme={theme} />
         <Testimonials />
         <ROICalculator />
         <GoogleCalendar />
