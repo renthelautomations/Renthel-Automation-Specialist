@@ -2667,11 +2667,11 @@ function StickyBookCTA() {
             position: 'fixed', bottom: 28, right: 28, zIndex: 200,
             display: 'flex', alignItems: 'center', gap: 8,
             padding: '12px 22px',
-            background: 'var(--gradient)',
+            background: '#3EC68A',
             border: 'none', borderRadius: 99,
             color: '#fff', fontFamily: 'Inter', fontSize: 14, fontWeight: 600,
             cursor: 'pointer', letterSpacing: '0.01em',
-            boxShadow: '0 4px 24px rgba(62,198,138,0.35), 0 2px 8px rgba(0,0,0,0.2)',
+            boxShadow: '0 2px 12px rgba(0,0,0,0.15)',
           }}
           onMouseEnter={e => (e.currentTarget as HTMLElement).style.opacity = '0.88'}
           onMouseLeave={e => (e.currentTarget as HTMLElement).style.opacity = '1'}
