@@ -1827,74 +1827,46 @@ function CTA() {
   );
 }
 
-const TIME_SLOTS = [
-  { label: '9:00 AM', hour: 9 },
-  { label: '10:00 AM', hour: 10 },
-  { label: '11:00 AM', hour: 11 },
-  { label: '2:00 PM', hour: 14 },
-  { label: '3:00 PM', hour: 15 },
-  { label: '4:00 PM', hour: 16 },
-];
-
-const DAY_HEADERS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
 function GoogleCalendar() {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [currentMonth, setCurrentMonth] = useState(() => {
-    const d = new Date();
-    return new Date(d.getFullYear(), d.getMonth(), 1);
-  });
+  useEffect(() => {
+    if ((window as any).Cal) return;
+    (function (C: any, A: string, L: string) {
+      const p = (a: any, ar: any) => { a.q.push(ar); };
+      const d = C.document;
+      C.Cal = C.Cal || function (...args: any[]) {
+        const cal = C.Cal;
+        if (!cal.loaded) {
+          cal.ns = {};
+          cal.q = cal.q || [];
+          const s = d.createElement('script');
+          s.src = A;
+          d.head.appendChild(s);
+          cal.loaded = true;
+        }
+        if (args[0] === L) {
+          const api = (...a: any[]) => p(api, a);
+          const ns = args[1];
+          (api as any).q = (api as any).q || [];
+          if (typeof ns === 'string') {
+            cal.ns[ns] = cal.ns[ns] || api;
+            p(cal.ns[ns], args);
+            p(cal, ['initNamespace', ns]);
+          } else { p(cal, args); }
+          return;
+        }
+        p(cal, args);
+      };
+    })(window, 'https://app.cal.com/embed/embed.js', 'init');
 
-  const today = useMemo(() => {
-    const d = new Date();
-    d.setHours(0, 0, 0, 0);
-    return d;
+    const Cal = (window as any).Cal;
+    Cal('init', '30min', { origin: 'https://app.cal.com' });
+    Cal.ns['30min']('inline', {
+      elementOrSelector: '#my-cal-inline-30min',
+      config: { layout: 'month_view', useSlotsViewOnSmallScreen: 'true' },
+      calLink: 'renthelautomations/30min',
+    });
+    Cal.ns['30min']('ui', { hideEventTypeDetails: false, layout: 'month_view' });
   }, []);
-
-  const monthLabel = useMemo(() =>
-    currentMonth.toLocaleString('en-US', { month: 'long', year: 'numeric' }),
-    [currentMonth]
-  );
-
-  const calendarDays = useMemo(() => {
-    const y = currentMonth.getFullYear();
-    const m = currentMonth.getMonth();
-    const firstDow = new Date(y, m, 1).getDay();
-    const totalDays = new Date(y, m + 1, 0).getDate();
-    const cells: (Date | null)[] = Array(firstDow).fill(null);
-    for (let d = 1; d <= totalDays; d++) cells.push(new Date(y, m, d));
-    return cells;
-  }, [currentMonth]);
-
-  const isAvailable = (d: Date) => d.getDay() !== 0 && d.getDay() !== 6 && d >= today;
-  const isSelected = (d: Date) =>
-    !!selectedDate &&
-    d.getFullYear() === selectedDate.getFullYear() &&
-    d.getMonth() === selectedDate.getMonth() &&
-    d.getDate() === selectedDate.getDate();
-  const isToday = (d: Date) => d.getTime() === today.getTime();
-
-  const goMonth = (dir: 1 | -1) => {
-    setCurrentMonth(m => new Date(m.getFullYear(), m.getMonth() + dir, 1));
-    setSelectedDate(null);
-  };
-
-  const buildUrl = (date: Date, hour: number) => {
-    // Convert PHT (UTC+8) to UTC by subtracting 8 h
-    const startUTC = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), hour - 8, 0, 0));
-    const endUTC   = new Date(startUTC.getTime() + 30 * 60 * 1000);
-    const fmt = (d: Date) => d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
-    return (
-      'https://calendar.google.com/calendar/r/eventedit' +
-      `?dates=${fmt(startUTC)}%2F${fmt(endUTC)}` +
-      '&add=renthel.smm%40gmail.com' +
-      '&title=Discovery+Call+with+Renthel+Cueto' +
-      '&details=30-minute+discovery+call+to+map+your+automation+opportunities.'
-    );
-  };
-
-  const formatDate = (d: Date) =>
-    d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
 
   return (
     <section id="calendar" style={{ padding: 'var(--section-padding) 0', background: 'var(--bg)' }}>
@@ -1917,201 +1889,15 @@ function GoogleCalendar() {
             fontFamily: 'Inter', fontSize: 16, color: 'var(--text-secondary)',
             maxWidth: 480, margin: '0 auto', lineHeight: 1.7
           }}>
-            Pick a date, choose a time, and the invite goes straight to Google Calendar.
+            Pick a date, choose a time, and get instant confirmation.
           </p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: 24, alignItems: 'start' }} className="calendar-grid">
+        <div
+          id="my-cal-inline-30min"
+          style={{ width: '100%', height: 700, overflow: 'scroll', borderRadius: 'var(--radius-card)' }}
+        />
 
-          {/* ── Interactive calendar ── */}
-          <div className="fade-init" style={{
-            background: 'var(--surface)', border: '1px solid var(--border)',
-            borderRadius: 'var(--radius-card)', overflow: 'hidden',
-          }}>
-            {/* Month nav */}
-            <div style={{
-              padding: '20px 24px', borderBottom: '1px solid var(--border)',
-              display: 'flex', alignItems: 'center', justifyContent: 'space-between'
-            }}>
-              <button onClick={() => goMonth(-1)} style={{
-                background: 'none', border: '1px solid var(--border)',
-                borderRadius: 8, width: 36, height: 36,
-                color: 'var(--text-secondary)', cursor: 'pointer', fontSize: 18,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                transition: 'border-color 150ms'
-              }}
-              onMouseEnter={e => (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-hover)'}
-              onMouseLeave={e => (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'}
-              >‹</button>
-              <span style={{ fontFamily: 'Space Grotesk', fontWeight: 600, fontSize: 18, color: 'var(--text-primary)' }}>
-                {monthLabel}
-              </span>
-              <button onClick={() => goMonth(1)} style={{
-                background: 'none', border: '1px solid var(--border)',
-                borderRadius: 8, width: 36, height: 36,
-                color: 'var(--text-secondary)', cursor: 'pointer', fontSize: 18,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                transition: 'border-color 150ms'
-              }}
-              onMouseEnter={e => (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-hover)'}
-              onMouseLeave={e => (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'}
-              >›</button>
-            </div>
-
-            <div style={{ padding: '24px' }}>
-              {/* Day-of-week headers */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 4, marginBottom: 8 }}>
-                {DAY_HEADERS.map(h => (
-                  <div key={h} style={{
-                    textAlign: 'center', fontFamily: 'Inter', fontSize: 11,
-                    fontWeight: 600, color: 'var(--text-tertiary)',
-                    textTransform: 'uppercase', letterSpacing: '0.06em', padding: '4px 0'
-                  }}>{h}</div>
-                ))}
-              </div>
-
-              {/* Day cells */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 4 }}>
-                {calendarDays.map((date, i) => {
-                  if (!date) return <div key={`e-${i}`} />;
-                  const avail   = isAvailable(date);
-                  const sel     = isSelected(date);
-                  const todayMk = isToday(date);
-                  return (
-                    <button
-                      key={i}
-                      onClick={() => avail && setSelectedDate(date)}
-                      disabled={!avail}
-                      style={{
-                        aspectRatio: '1', borderRadius: 8,
-                        border: todayMk && !sel ? '1px solid var(--accent)' : '1px solid transparent',
-                        background: sel ? 'var(--gradient)' : 'transparent',
-                        color: sel ? '#fff' : avail ? 'var(--text-primary)' : 'var(--text-tertiary)',
-                        fontFamily: 'Inter', fontSize: 14, fontWeight: sel ? 600 : 400,
-                        cursor: avail ? 'pointer' : 'default',
-                        opacity: avail ? 1 : 0.3,
-                        transition: 'background 0.15s, color 0.15s',
-                      }}
-                      onMouseEnter={e => { if (avail && !sel) (e.currentTarget as HTMLElement).style.background = 'var(--surface-hover)'; }}
-                      onMouseLeave={e => { if (!sel) (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
-                    >
-                      {date.getDate()}
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* Legend */}
-              <div style={{ marginTop: 20, display: 'flex', gap: 20, justifyContent: 'center', flexWrap: 'wrap' }}>
-                {[
-                  { swatch: <div style={{ width: 10, height: 10, borderRadius: 2, background: 'var(--gradient)' }} />, label: 'Selected' },
-                  { swatch: <div style={{ width: 10, height: 10, borderRadius: 2, border: '1px solid var(--accent)' }} />, label: 'Today' },
-                  { swatch: <div style={{ width: 10, height: 10, borderRadius: 2, background: 'var(--text-tertiary)', opacity: 0.35 }} />, label: 'Unavailable' },
-                ].map(({ swatch, label }) => (
-                  <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 6, fontFamily: 'Inter', fontSize: 12, color: 'var(--text-tertiary)' }}>
-                    {swatch}{label}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* ── Booking card ── */}
-          <div className="fade-init" style={{
-            background: 'var(--surface)', border: '1px solid var(--border)',
-            borderRadius: 'var(--radius-card)', padding: 28,
-            display: 'flex', flexDirection: 'column', gap: 20,
-          }}>
-            {/* Avatar */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-              <img src={profilePic} alt="Renthel Cueto" style={{
-                width: 52, height: 52, objectFit: 'contain',
-                flexShrink: 0
-              }} />
-              <div>
-                <div style={{ fontFamily: 'Inter', fontWeight: 600, fontSize: 15, color: 'var(--text-primary)' }}>Renthel Cueto</div>
-                <div style={{ fontFamily: 'Inter', fontSize: 12, color: 'var(--text-tertiary)', marginTop: 2 }}>Automation Engineer</div>
-              </div>
-            </div>
-
-            <div style={{ height: 1, background: 'var(--border)' }} />
-
-            {/* Meeting info */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <div style={{ fontFamily: 'Space Grotesk', fontWeight: 600, fontSize: 19, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
-                Discovery Call
-              </div>
-              <div style={{ fontFamily: 'Inter', fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-                We map your current process together. I ask the right questions. You know exactly what we're building before I write a single line of logic.
-              </div>
-              {[
-                { icon: '⏱', text: '30 minutes' },
-                { icon: '📍', text: 'Google Meet' },
-                { icon: '🌏', text: 'Asia/Manila (PHT)' },
-                { icon: '💸', text: 'Free — no obligation' },
-              ].map(({ icon, text }) => (
-                <div key={text} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <span style={{ fontSize: 13 }}>{icon}</span>
-                  <span style={{ fontFamily: 'Inter', fontSize: 13, color: 'var(--text-secondary)' }}>{text}</span>
-                </div>
-              ))}
-            </div>
-
-            <div style={{ height: 1, background: 'var(--border)' }} />
-
-            {/* Time slot picker */}
-            {!selectedDate ? (
-              <div style={{
-                textAlign: 'center', padding: '16px 0',
-                fontFamily: 'Inter', fontSize: 13, color: 'var(--text-tertiary)', lineHeight: 1.6
-              }}>
-                ← Select a date to see<br />available time slots
-              </div>
-            ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                <div style={{ fontFamily: 'Inter', fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>
-                  {formatDate(selectedDate)}
-                </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-                  {TIME_SLOTS.map(({ label, hour }) => (
-                    <a
-                      key={label}
-                      href={buildUrl(selectedDate, hour)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        display: 'block', textAlign: 'center',
-                        fontFamily: 'Inter', fontSize: 13, fontWeight: 500,
-                        color: 'var(--text-primary)', padding: '10px 6px',
-                        borderRadius: 8, border: '1px solid var(--border)',
-                        background: 'var(--surface-hover)',
-                        textDecoration: 'none', transition: 'border-color 0.15s, background 0.15s'
-                      }}
-                      onMouseEnter={e => {
-                        (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)';
-                        (e.currentTarget as HTMLElement).style.background = 'var(--surface)';
-                      }}
-                      onMouseLeave={e => {
-                        (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)';
-                        (e.currentTarget as HTMLElement).style.background = 'var(--surface-hover)';
-                      }}
-                    >
-                      {label} <span style={{ opacity: 0.5, fontSize: 11 }}>PHT</span>
-                    </a>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <p style={{ fontFamily: 'Inter', fontSize: 12, color: 'var(--text-tertiary)', textAlign: 'center', lineHeight: 1.5 }}>
-              Or email{' '}
-              <a href="mailto:rnthlcueto@gmail.com" style={{ color: 'var(--accent)', textDecoration: 'none', fontWeight: 500 }}>
-                rnthlcueto@gmail.com
-              </a>
-            </p>
-          </div>
-
-        </div>
       </div>
     </section>
   );
