@@ -2356,7 +2356,7 @@ function Footer() {
           >
             <Mail size={18} />
           </a>
-          <a href="https://www.linkedin.com/in/renthel-cueto" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-tertiary)', transition: 'color 150ms' }}
+          <a href="https://www.linkedin.com/in/rnthlcueto/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-tertiary)', transition: 'color 150ms' }}
             onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = 'var(--text-primary)'}
             onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = 'var(--text-tertiary)'}
           >
