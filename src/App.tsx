@@ -4,13 +4,16 @@ import profilePic from '../Assets/ren techy2 copy.png';
 import logoImg   from '../Assets/logo.png';
 import {
   siN8n, siZapier, siMake, siAirtable, siNotion,
-  siAnthropic, siZoho, siMeta
+  siAnthropic, siZoho, siMeta,
+  siJira, siAsana, siWhatsapp, siWordpress, siZoom,
+  siGithub, siXero, siSupabase, siGoogle, siElevenlabs, siCursor
 } from 'simple-icons';
 import {
   Zap, FileText, Repeat, Database, BarChart2,
   ChevronRight, ChevronLeft, Search, Layers, CheckCircle,
   Mail, Linkedin, ArrowRight, ExternalLink,
-  Sun, Moon
+  Sun, Moon,
+  CalendarDays, Clock, Timer, Gift, Check, Video
 } from 'lucide-react';
 
 // --- DATA DEFINITIONS ---
@@ -247,18 +250,34 @@ const STEPS = [
 ];
 
 const TECH_STACK = [
-  { name: 'n8n', description: 'The central brain for complex workflows.', color: '#FF6D5A' },
-  { name: 'Zapier', description: 'Quick connections for 5,000+ apps.', color: '#FF4F00' },
-  { name: 'Make.com', description: 'Visual automation for advanced logic.', color: '#8B5CF6' },
-  { name: 'Airtable', description: 'The flexible database for your operations.', color: '#18BFFF' },
-  { name: 'Notion', description: 'Centralized documentation and project tracking.', color: '#000000' },
-  { name: 'OpenAI', description: 'AI-powered classification and content generation.', color: '#10A37F' },
-  { name: 'Claude', description: 'Advanced reasoning for document processing.', color: '#D97757' },
-  { name: 'Zoho CRM', description: 'Enterprise-grade lead and client management.', color: '#E01E26' },
-  { name: 'Twilio', description: 'Automated SMS and voice communication.', color: '#F22F46' },
-  { name: 'Slack', description: 'Real-time notifications and team alerts.', color: '#4A154B' },
-  { name: 'Meta API', description: 'Automated lead capture from FB/IG ads.', color: '#0668E1' },
-  { name: 'REST APIs', description: 'Custom connections for any modern tool.', color: '#A1A1AA' }
+  { name: 'n8n',              color: '#FF6D5A' },
+  { name: 'Zapier',           color: '#FF4F00' },
+  { name: 'Make.com',         color: '#8B5CF6' },
+  { name: 'Airtable',         color: '#18BFFF' },
+  { name: 'Notion',           color: '#000000' },
+  { name: 'Jira',             color: '#0052CC' },
+  { name: 'Asana',            color: '#F06A6A' },
+  { name: 'OpenAI',           color: '#10A37F' },
+  { name: 'Claude',           color: '#D97757' },
+  { name: 'Claude Code',      color: '#D97757' },
+  { name: 'Vapi',             color: '#6366F1' },
+  { name: 'ElevenLabs',       color: '#000000' },
+  { name: 'Zoho CRM',         color: '#E01E26' },
+  { name: 'GoHighLevel',      color: '#7B68EE' },
+  { name: 'Apollo.io',        color: '#E8531A' },
+  { name: 'Slack',            color: '#4A154B' },
+  { name: 'WhatsApp',         color: '#25D366' },
+  { name: 'Twilio',           color: '#F22F46' },
+  { name: 'Zoom',             color: '#2D8CFF' },
+  { name: 'Google Workspace', color: '#4285F4' },
+  { name: 'Meta API',         color: '#0668E1' },
+  { name: 'GitHub',           color: '#181717' },
+  { name: 'Cursor',           color: '#000000' },
+  { name: 'Supabase',         color: '#3ECF8E' },
+  { name: 'WordPress',        color: '#21759B' },
+  { name: 'Ahrefs',           color: '#FF8C00' },
+  { name: 'Xero',             color: '#13B5EA' },
+  { name: 'REST APIs',        color: '#A1A1AA' },
 ];
 
 const CLIENT_LOGOS = [
@@ -346,7 +365,7 @@ function CountUp({ end, suffix = '', duration = 1800 }: { end: number; suffix?: 
   return <span ref={elRef}>{count}{suffix}</span>;
 }
 
-function CursorGlow() {
+function CursorGlow({ theme }: { theme: string }) {
   const glowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -360,6 +379,10 @@ function CursorGlow() {
     return () => window.removeEventListener('mousemove', move);
   }, []);
 
+  const bg = theme === 'light'
+    ? 'radial-gradient(circle, rgba(62,198,138,0.13) 0%, transparent 70%)'
+    : 'radial-gradient(circle, rgba(210,210,210,0.07) 0%, transparent 70%)';
+
   return (
     <div ref={glowRef} style={{
       position: 'fixed',
@@ -369,7 +392,7 @@ function CursorGlow() {
       transform: 'translate(-50%, -50%)',
       width: 280, height: 280,
       borderRadius: '50%',
-      background: 'radial-gradient(circle, rgba(210,210,210,0.07) 0%, transparent 70%)',
+      background: bg,
       transition: 'left 0.14s ease-out, top 0.14s ease-out',
     }} />
   );
@@ -480,46 +503,61 @@ function LogoMarquee() {
   );
 }
 
-// Real SVG paths for brands not available in simple-icons (removed due to trademark)
 const EXTRA_PATHS: Record<string, string> = {
-  // OpenAI — official logo path (viewBox 0 0 24 24)
   'OpenAI': 'M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.18a5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .51 4.911 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.99 5.99 0 0 0 3.997-2.9 6.056 6.056 0 0 0-.747-7.073zM13.26 22.43a4.476 4.476 0 0 1-2.876-1.04l.141-.081 4.779-2.758a.795.795 0 0 0 .392-.681v-6.737l2.02 1.168a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.494 4.494zM3.6 18.304a4.47 4.47 0 0 1-.535-3.014l.142.085 4.783 2.759a.771.771 0 0 0 .78 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.14-1.646zM2.34 7.896a4.485 4.485 0 0 1 2.366-1.973V11.6a.766.766 0 0 0 .388.676l5.815 3.355-2.02 1.168a.076.076 0 0 1-.071 0L4.4 14.115a4.5 4.5 0 0 1-2.06-6.22zm16.597 3.855-5.815-3.354 2.02-1.168a.076.076 0 0 1 .071 0l4.418 2.549a4.5 4.5 0 0 1-.676 8.123v-5.676a.79.79 0 0 0-.018-.474zm2.01-3.023-.141-.085-4.774-2.782a.776.776 0 0 0-.785 0L9.409 9.23V6.897a.066.066 0 0 1 .028-.061l4.419-2.548a4.5 4.5 0 0 1 6.68 4.66zm-12.64 4.135-2.02-1.164a.08.08 0 0 1-.038-.057V6.075a4.5 4.5 0 0 1 7.375-3.453l-.142.08-4.778 2.758a.795.795 0 0 0-.393.681zm1.097-2.365 2.602-1.5 2.607 1.5v2.999l-2.597 1.5-2.607-1.5z',
-  // Slack — official logo path (viewBox 0 0 24 24)
-  'Slack': 'M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313zM8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312zM18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312zM15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z',
-  // Twilio — official logo path (viewBox 0 0 24 24)
+  'Slack':  'M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313zM8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312zM18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312zM15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z',
   'Twilio': 'M11.993 0C5.366 0 0 5.366 0 12s5.366 12 12 12 12-5.366 12-12S18.627 0 11.993 0zM12 19.23c-3.987 0-7.23-3.243-7.23-7.23 0-3.987 3.243-7.23 7.23-7.23 3.987 0 7.23 3.243 7.23 7.23 0 3.987-3.243 7.23-7.23 7.23zm4.632-9.12a1.548 1.548 0 1 1-3.096 0 1.548 1.548 0 0 1 3.096 0zm-3.18 4.824a1.548 1.548 0 1 1-3.096 0 1.548 1.548 0 0 1 3.096 0zm-4.08-4.824a1.548 1.548 0 1 1 3.096 0 1.548 1.548 0 0 1-3.096 0zm3.18 4.824a1.548 1.548 0 1 1 3.096 0 1.548 1.548 0 0 1-3.096 0z',
-  // REST APIs — code brackets (viewBox 0 0 24 24)
   'REST APIs': 'M7.5 4.5L1 12l6.5 7.5h2.25L3.25 12 9.75 4.5zm9 0L23 12l-6.5 7.5h-2.25L20.75 12 14.25 4.5zM13.5 3l-3 18h2l3-18z',
+  // GoHighLevel — lightning bolt (CRM/marketing platform)
+  'GoHighLevel': 'M13 2L3.5 14h7L7 22 20.5 10h-7.5z',
+  // Apollo.io — concentric circles (sales intelligence / targeting)
+  'Apollo.io': 'M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 2a8 8 0 1 1 0 16A8 8 0 0 1 12 4zm0 3a5 5 0 1 0 0 10A5 5 0 0 0 12 7zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6z',
+  // Vapi — microphone (voice AI platform)
+  'Vapi': 'M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm0 2a2 2 0 0 0-2 2v6a2 2 0 1 0 4 0V5a2 2 0 0 0-2-2zm-7 9h2a7 7 0 0 0 14 0h2a9 9 0 0 1-8 8.945V23h3v2H8v-2h3v-2.055A9 9 0 0 1 3 12h2z',
+  // Ahrefs — ascending bars (SEO analytics)
+  'Ahrefs': 'M4 16h3v4H4v-4zm4.5-5H12v9H8.5v-9zm4.5 2h3.5v7H13v-7zm4.5-7H21v14h-3.5V6zM4 10h3v4H4v-4zm-.5-6H7v4H3.5V4z',
 };
 
-// Map tool names to simple-icons exports (viewBox 0 0 24 24)
 const SI_MAP: Record<string, { path: string }> = {
-  'n8n':      siN8n,
-  'Zapier':   siZapier,
-  'Make.com': siMake,
-  'Airtable': siAirtable,
-  'Notion':   siNotion,
-  'Claude':   siAnthropic,
-  'Zoho CRM': siZoho,
-  'Meta API': siMeta,
+  'n8n':              siN8n,
+  'Zapier':           siZapier,
+  'Make.com':         siMake,
+  'Airtable':         siAirtable,
+  'Notion':           siNotion,
+  'Claude':           siAnthropic,
+  'Claude Code':      siAnthropic,
+  'Zoho CRM':         siZoho,
+  'Meta API':         siMeta,
+  'Jira':             siJira,
+  'Asana':            siAsana,
+  'WhatsApp':         siWhatsapp,
+  'WordPress':        siWordpress,
+  'Zoom':             siZoom,
+  'GitHub':           siGithub,
+  'Xero':             siXero,
+  'Supabase':         siSupabase,
+  'Google Workspace': siGoogle,
+  'ElevenLabs':       siElevenlabs,
+  'Cursor':           siCursor,
 };
 
-function TechIcon({ name, size = 24 }: { name: string; size?: number }) {
+function TechIcon({ name, size = 24, isDark = true }: { name: string; size?: number; isDark?: boolean }) {
   const path = SI_MAP[name]?.path ?? EXTRA_PATHS[name] ?? '';
   if (!path) return null;
   return (
-    <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden fill="url(#chrome-fill)">
+    <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden
+      fill={isDark ? 'url(#chrome-fill)' : 'url(#chrome-fill-light)'}>
       <path d={path} />
     </svg>
   );
 }
 
 function TechStack({ theme }: { theme: string }) {
+  const isDark = theme === 'dark';
   const rows = useMemo(() => {
     const all = TECH_STACK;
     const rev = [...TECH_STACK].reverse();
-    const rot = [...TECH_STACK.slice(5), ...TECH_STACK.slice(0, 5)];
-    // Double each row so the loop is seamless at translateX(-50%)
+    const rot = [...TECH_STACK.slice(9), ...TECH_STACK.slice(0, 9)];
     return [all, rev, rot].map(r => [...r, ...r]);
   }, []);
 
@@ -549,7 +587,7 @@ function TechStack({ theme }: { theme: string }) {
         </div>
       </div>
 
-      {/* Shared chrome gradient defs */}
+      {/* Shared gradient defs — chrome for dark, dark-slate for light */}
       <svg aria-hidden width="0" height="0" style={{ position: 'absolute', pointerEvents: 'none' }}>
         <defs>
           <linearGradient id="chrome-fill" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
@@ -558,6 +596,13 @@ function TechStack({ theme }: { theme: string }) {
             <stop offset="50%"  stopColor="#f5f5f5" />
             <stop offset="75%"  stopColor="#9a9a9a" />
             <stop offset="100%" stopColor="#d0d0d0" />
+          </linearGradient>
+          <linearGradient id="chrome-fill-light" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
+            <stop offset="0%"   stopColor="#2a2a2a" />
+            <stop offset="25%"  stopColor="#404040" />
+            <stop offset="50%"  stopColor="#1a1a1a" />
+            <stop offset="75%"  stopColor="#3a3a3a" />
+            <stop offset="100%" stopColor="#2a2a2a" />
           </linearGradient>
         </defs>
       </svg>
@@ -586,13 +631,10 @@ function TechStack({ theme }: { theme: string }) {
                 flexShrink: 0,
                 boxShadow: '0 2px 10px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.04)',
               }}>
-                <TechIcon name={tech.name} size={34} />
+                <TechIcon name={tech.name} size={34} isDark={isDark} />
                 <span style={{
                   fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 11,
-                  background: 'linear-gradient(180deg, #e8e8e8 0%, #b4b4b4 30%, #f5f5f5 50%, #9a9a9a 70%, #d0d0d0 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
+                  color: isDark ? '#c8c8c8' : '#1a1a1a',
                   letterSpacing: '-0.01em',
                   textAlign: 'center',
                   lineHeight: 1.2,
@@ -894,22 +936,29 @@ function Workflows() {
         {WORKFLOWS.map((w, i) => {
           const pos = getPos(i);
           const isCenter = pos === 0;
-          const isLeft   = pos === -1;
-          const isRight  = pos === 1;
-          const isVisible = Math.abs(pos) <= 1;
+          const isLeft1  = pos === -1;
+          const isRight1 = pos === 1;
+          const isLeft2  = pos === -2;
+          const isRight2 = pos === 2;
+          const isVisible = Math.abs(pos) <= 2;
 
           let transform = '';
-          if (isCenter)    transform = 'translateX(0px)   scale(1)    rotateY(0deg)';
-          else if (isLeft) transform = 'translateX(-340px) scale(0.8) rotateY(22deg)';
-          else if (isRight)transform = 'translateX(340px)  scale(0.8) rotateY(-22deg)';
-          else if (pos < 0)transform = 'translateX(-720px) scale(0.6) rotateY(28deg)';
-          else             transform = 'translateX(720px)  scale(0.6) rotateY(-28deg)';
+          if (isCenter)      transform = 'translateX(0px)    scale(1)    rotateY(0deg)';
+          else if (isLeft1)  transform = 'translateX(-340px)  scale(0.8)  rotateY(22deg)';
+          else if (isRight1) transform = 'translateX(340px)   scale(0.8)  rotateY(-22deg)';
+          else if (isLeft2)  transform = 'translateX(-590px)  scale(0.62) rotateY(32deg)';
+          else if (isRight2) transform = 'translateX(590px)   scale(0.62) rotateY(-32deg)';
+          else if (pos < 0)  transform = 'translateX(-820px)  scale(0.5)  rotateY(35deg)';
+          else               transform = 'translateX(820px)   scale(0.5)  rotateY(-35deg)';
+
+          const opacity = isCenter ? 1 : (isLeft1 || isRight1) ? 0.65 : (isLeft2 || isRight2) ? 0.35 : 0;
+          const zIndex  = isCenter ? 4 : (isLeft1 || isRight1) ? 3 : (isLeft2 || isRight2) ? 2 : 0;
 
           return (
             <div
               key={i}
               className="silver-glow"
-              onClick={isLeft ? goPrev : isRight ? goNext : undefined}
+              onClick={isLeft1 ? goPrev : isRight1 ? goNext : undefined}
               style={{
                 position: 'absolute',
                 top: '50%', left: '50%',
@@ -922,10 +971,10 @@ function Workflows() {
                 padding: 32,
                 display: 'flex', flexDirection: 'column', gap: 14,
                 transform,
-                opacity: isCenter ? 1 : isVisible ? 0.65 : 0,
-                zIndex: isCenter ? 3 : isVisible ? 2 : 0,
-                cursor: (isLeft || isRight) ? 'pointer' : 'default',
-                pointerEvents: isVisible ? 'auto' : 'none',
+                opacity,
+                zIndex,
+                cursor: (isLeft1 || isRight1) ? 'pointer' : 'default',
+                pointerEvents: (isLeft1 || isRight1) ? 'auto' : isCenter ? 'auto' : 'none',
                 transition: 'transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.5s ease, border-color 0.3s ease, box-shadow 0.3s ease',
                 boxShadow: isCenter
                   ? '0 8px 24px rgba(0,0,0,0.18)'
@@ -1398,18 +1447,62 @@ function WorkflowDiagram({ diagram, theme }: { diagram: any, theme: string }) {
   );
 }
 
+function MiniWorkflowBar({ diagram: _diagram, onClick }: { diagram: any; onClick: () => void }) {
+  return (
+    <button onClick={onClick} style={{
+      background: 'var(--bg)', border: '1px solid var(--border)',
+      borderRadius: 8, padding: '8px 14px', cursor: 'pointer',
+      display: 'inline-flex', alignItems: 'center', gap: 6,
+      fontFamily: 'Inter', fontSize: 12, fontWeight: 500,
+      color: 'var(--text-secondary)', transition: 'border-color 0.18s, color 0.18s',
+    }}
+    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)'; (e.currentTarget as HTMLElement).style.color = 'var(--accent)'; }}
+    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'; (e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)'; }}
+    >
+      <Layers size={13} />
+      Preview Workflow
+    </button>
+  );
+}
+
 function CaseStudies({ theme }: { theme: string }) {
   const [filter, setFilter] = useState('All');
+  const [active, setActive] = useState(0);
   const [selectedWorkflow, setSelectedWorkflow] = useState<any>(null);
   const categories = ['All', 'CRM & Operations', 'Lead Generation', 'AI Automation'];
 
-  const filteredStudies = filter === 'All' 
-    ? CASE_STUDIES 
-    : CASE_STUDIES.filter(study => study.category === filter);
+  const filteredStudies = filter === 'All'
+    ? CASE_STUDIES
+    : CASE_STUDIES.filter(s => s.category === filter);
+  const total = filteredStudies.length;
+
+  useEffect(() => { setActive(0); }, [filter]);
+
+  const getPos = (i: number) => {
+    let pos = (i - active + total) % total;
+    if (pos > Math.floor(total / 2)) pos -= total;
+    return pos;
+  };
+
+  const goNext = () => setActive(n => (n + 1) % total);
+  const goPrev = () => setActive(n => (n - 1 + total) % total);
+
+  const swipeCooldown = useRef(false);
+
+  const handleWheel = (e: React.WheelEvent) => {
+    if (Math.abs(e.deltaX) < Math.abs(e.deltaY)) return; // ignore vertical scroll
+    if (swipeCooldown.current) return;
+    if (Math.abs(e.deltaX) < 30) return;
+    e.deltaX > 0 ? goNext() : goPrev();
+    swipeCooldown.current = true;
+    setTimeout(() => { swipeCooldown.current = false; }, 600);
+  };
 
   return (
-    <section id="work" style={{ padding: 'var(--section-padding) 0' }}>
+    <section id="work" style={{ padding: 'var(--section-padding) 0 24px', overflow: 'hidden' }}>
       <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto', padding: '0 24px' }}>
+
+        {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: 64 }}>
           <span style={{
             fontFamily: 'Inter', fontSize: 11, fontWeight: 600,
@@ -1420,154 +1513,173 @@ function CaseStudies({ theme }: { theme: string }) {
             fontFamily: 'Space Grotesk, sans-serif', fontSize: 'clamp(32px, 4vw, 48px)',
             lineHeight: 1.1, color: 'var(--text-primary)', fontWeight: 600,
             letterSpacing: '-0.02em', marginBottom: 32
-          }}>
-            Real problems. Automated solutions.
-          </h2>
-
+          }}>Real problems. Automated solutions.</h2>
           <div style={{ display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap' }}>
             {categories.map(cat => (
-              <button
-                key={cat}
-                onClick={() => setFilter(cat)}
-                style={{
-                  padding: '8px 20px', borderRadius: '99px', fontSize: 13,
-                  fontFamily: 'Inter', fontWeight: 500, cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                  background: filter === cat ? 'var(--accent)' : 'var(--surface)',
-                  color: filter === cat ? (theme === 'dark' ? '#000' : '#fff') : 'var(--text-secondary)',
-                  border: `1px solid ${filter === cat ? 'var(--accent)' : 'var(--border)'}`
-                }}
-              >
-                {cat}
-              </button>
+              <button key={cat} onClick={() => setFilter(cat)} style={{
+                padding: '8px 20px', borderRadius: '99px', fontSize: 13,
+                fontFamily: 'Inter', fontWeight: 500, cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                background: filter === cat ? 'var(--accent)' : 'var(--surface)',
+                color: filter === cat ? (theme === 'dark' ? '#000' : '#fff') : 'var(--text-secondary)',
+                border: `1px solid ${filter === cat ? 'var(--accent)' : 'var(--border)'}`
+              }}>{cat}</button>
             ))}
           </div>
         </div>
+      </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 48 }}>
-          <AnimatePresence mode="wait">
-            <motion.div 
-              key={filter}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-              style={{ display: 'flex', flexDirection: 'column', gap: 48 }}
+      {/* Coverflow stage */}
+      <div className="cs-coverflow-stage"
+        onWheel={handleWheel}
+        style={{
+          position: 'relative', height: 580,
+          perspective: '1400px', perspectiveOrigin: '50% 50%',
+        }}>
+        {filteredStudies.map((cs, i) => {
+          const pos      = getPos(i);
+          const isCenter = pos === 0;
+          const isLeft   = pos === -1;
+          const isRight  = pos === 1;
+          const isVis    = Math.abs(pos) <= 1;
+
+          let transform = '';
+          if (isCenter)    transform = 'translateX(0px)    scale(1)    rotateY(0deg)';
+          else if (isLeft) transform = 'translateX(-490px) scale(0.82) rotateY(20deg)';
+          else if (isRight)transform = 'translateX(490px)  scale(0.82) rotateY(-20deg)';
+          else if (pos < 0)transform = 'translateX(-900px) scale(0.65) rotateY(26deg)';
+          else             transform = 'translateX(900px)  scale(0.65) rotateY(-26deg)';
+
+          const baseShadow = isCenter ? '0 8px 32px rgba(0,0,0,0.22)' : '0 4px 12px rgba(0,0,0,0.1)';
+          const glowShadow = '0 0 0 2px #3EC68A, 0 0 24px 8px rgba(62,198,138,0.6), 0 0 60px 16px rgba(62,198,138,0.25)';
+
+          return (
+            <div key={cs.client + filter} className="silver-glow"
+              onClick={isLeft ? goPrev : isRight ? goNext : undefined}
+              onMouseEnter={e => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.boxShadow = glowShadow;
+                el.style.border = '2px solid #3EC68A';
+              }}
+              onMouseLeave={e => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.boxShadow = baseShadow;
+                el.style.border = `1px solid ${isCenter ? 'rgba(200,200,200,0.28)' : 'var(--border)'}`;
+              }}
+              style={{
+                position: 'absolute', top: '50%', left: '50%',
+                width: 660, marginLeft: -330, marginTop: -280,
+                boxSizing: 'border-box',
+                background: 'var(--surface)',
+                border: `1px solid ${isCenter ? 'rgba(200,200,200,0.28)' : 'var(--border)'}`,
+                borderRadius: 20, padding: 28,
+                display: 'flex', flexDirection: 'column', gap: 16,
+                transform,
+                opacity: isCenter ? 1 : isVis ? 0.6 : 0,
+                zIndex: isCenter ? 3 : isVis ? 2 : 0,
+                cursor: (isLeft || isRight) ? 'pointer' : 'default',
+                pointerEvents: isVis ? 'auto' : 'none',
+                transition: 'transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.5s ease, border-color 0.3s, box-shadow 0.35s ease',
+                boxShadow: baseShadow,
+                overflow: 'hidden',
+              }}
             >
-              {filteredStudies.map((cs, i) => (
-                <div key={cs.client} style={{
-                  background: 'var(--surface)', border: '1px solid var(--border)',
-                  borderRadius: 'var(--radius-card)', padding: 'var(--card-padding)',
-                  display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48,
-                  position: 'relative', overflow: 'hidden'
-                }} className="case-grid card-hover">
-                  <div style={{
-                    position: 'absolute', top: 0, right: 0, padding: '8px 16px',
-                    background: 'var(--accent-glow)', color: 'var(--accent)',
-                    fontSize: 10, fontWeight: 700, textTransform: 'uppercase',
-                    letterSpacing: '0.05em', borderBottomLeftRadius: 12
-                  }}>
-                    {cs.category}
-                  </div>
-                  <div>
-                    <span style={{
-                      fontFamily: 'Inter', fontSize: 11, fontWeight: 600,
-                      letterSpacing: '0.06em', textTransform: 'uppercase',
-                      color: 'var(--text-tertiary)', display: 'block', marginBottom: 8
-                    }}>{cs.industry}</span>
-                    <h3 style={{
-                      fontFamily: 'Inter', fontWeight: 600, fontSize: 24,
-                      color: 'var(--text-primary)', marginBottom: 16
-                    }}>
-                      {cs.website ? (
-                        <a href={cs.website} target="_blank" rel="noopener noreferrer" style={{ 
-                          display: 'flex', alignItems: 'center', gap: 8, color: 'inherit', transition: 'color 0.2s' 
-                        }}
+              {/* Category badge */}
+              <div style={{
+                position: 'absolute', top: 0, right: 0, padding: '7px 14px',
+                background: 'var(--accent-glow)', color: 'var(--accent)',
+                fontSize: 9, fontWeight: 700, textTransform: 'uppercase',
+                letterSpacing: '0.06em', borderBottomLeftRadius: 12,
+              }}>{cs.category}</div>
+
+              {/* Zone 1 — Identity */}
+              <div>
+                <span style={{
+                  fontFamily: 'Inter', fontSize: 10, fontWeight: 600,
+                  letterSpacing: '0.08em', textTransform: 'uppercase',
+                  color: 'var(--text-tertiary)', display: 'block', marginBottom: 5,
+                }}>{cs.industry}</span>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
+                  <h3 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 22, color: 'var(--text-primary)', margin: 0, lineHeight: 1.2 }}>
+                    {cs.website ? (
+                      <a href={cs.website} target="_blank" rel="noopener noreferrer"
+                        style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'inherit', transition: 'color 0.2s' }}
                         onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = 'var(--accent)'}
                         onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = 'var(--text-primary)'}
-                        >
-                          {cs.client}
-                          <ExternalLink size={18} style={{ opacity: 0.5 }} />
-                        </a>
-                      ) : cs.client}
-                    </h3>
-                    <p style={{
-                      fontFamily: 'Inter', fontSize: 15, color: 'var(--text-secondary)',
-                      lineHeight: 1.6, marginBottom: 24
-                    }}>{cs.problem}</p>
-                    
-                    <p style={{
-                      fontFamily: 'Inter', fontSize: 11, fontWeight: 600,
-                      letterSpacing: '0.08em', textTransform: 'uppercase',
-                      color: 'var(--text-tertiary)', marginBottom: 12
-                    }}>What I Built</p>
-                    <ul style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 24 }}>
-                      {cs.bullets.map((bullet, bi) => (
-                        <li key={bi} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
-                          <ChevronRight size={14} color="var(--accent)" style={{ marginTop: 4, flexShrink: 0 }} />
-                          <span style={{ fontFamily: 'Inter', fontSize: 14, color: 'var(--text-secondary)' }}>{bullet}</span>
-                        </li>
-                      ))}
-                    </ul>
-
-                    <div style={{ display: 'flex', gap: 24, marginBottom: 24 }}>
-                      {cs.results.map((res, ri) => (
-                        <div key={ri}>
-                          <div style={{ fontFamily: 'Inter', fontWeight: 700, fontSize: 18, color: 'var(--success)' }}>{res.value}</div>
-                          <div style={{ fontFamily: 'Inter', fontSize: 11, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>{res.label}</div>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 24 }}>
-                      {cs.tools.map((tool, ti) => (
-                        <span key={ti} style={{
-                          background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border)',
-                          padding: '4px 8px', borderRadius: 'var(--radius-badge)',
-                          fontFamily: 'Inter', fontSize: 10, color: 'var(--text-tertiary)'
-                        }}>{tool}</span>
-                      ))}
-                    </div>
-
-                    <button 
-                      onClick={() => setSelectedWorkflow(cs)}
-                      style={{
-                        background: 'transparent', border: '1px solid var(--accent)',
-                        color: 'var(--accent)', fontFamily: 'Inter', fontSize: 13,
-                        fontWeight: 600, padding: '10px 20px', borderRadius: 'var(--radius-btn)',
-                        cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8,
-                        transition: 'all 0.2s ease'
-                      }}
-                      onMouseEnter={e => {
-                        (e.currentTarget as HTMLElement).style.background = 'var(--accent)';
-                        (e.currentTarget as HTMLElement).style.color = theme === 'dark' ? '#000' : '#fff';
-                      }}
-                      onMouseLeave={e => {
-                        (e.currentTarget as HTMLElement).style.background = 'transparent';
-                        (e.currentTarget as HTMLElement).style.color = 'var(--accent)';
-                      }}
-                    >
-                      <Layers size={16} />
-                      View Workflow Preview
-                    </button>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <WorkflowDiagram diagram={cs.diagram} theme={theme} />
-                  </div>
+                      >{cs.client}<ExternalLink size={15} style={{ opacity: 0.5 }} /></a>
+                    ) : cs.client}
+                  </h3>
+                  <MiniWorkflowBar diagram={cs.diagram} onClick={() => setSelectedWorkflow(cs)} />
                 </div>
-              ))}
-            </motion.div>
-          </AnimatePresence>
-        </div>
+              </div>
+
+              {/* Zone 2 — Problem */}
+              <div>
+                <span style={{
+                  fontFamily: 'Inter', fontSize: 9, fontWeight: 700,
+                  letterSpacing: '0.1em', textTransform: 'uppercase',
+                  color: 'var(--text-tertiary)', display: 'block', marginBottom: 6,
+                }}>The Problem</span>
+                <p style={{
+                  fontFamily: 'Inter', fontSize: 13, color: 'var(--text-secondary)',
+                  lineHeight: 1.65, margin: 0,
+                  display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden',
+                }}>{cs.problem}</p>
+              </div>
+
+              {/* Zone 3 — Results */}
+              <div>
+                <span style={{
+                  fontFamily: 'Inter', fontSize: 9, fontWeight: 700,
+                  letterSpacing: '0.1em', textTransform: 'uppercase',
+                  color: 'var(--success)', display: 'block', marginBottom: 10, opacity: 0.85,
+                }}>Results</span>
+                <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
+                  {cs.results.map((res, ri) => (
+                    <div key={ri}>
+                      <div style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 28, lineHeight: 1, color: 'var(--success)', letterSpacing: '-0.02em' }}>{res.value}</div>
+                      <div style={{ fontFamily: 'Inter', fontSize: 11, color: 'var(--text-tertiary)', marginTop: 4, lineHeight: 1.3 }}>{res.label}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div style={{ height: 1, background: 'var(--border)', flexShrink: 0 }} />
+
+              {/* Zone 4 — What changed */}
+              <ul style={{ display: 'flex', flexDirection: 'column', gap: 6, margin: 0, padding: 0 }}>
+                {cs.bullets.slice(0, 3).map((b, bi) => (
+                  <li key={bi} style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+                    <CheckCircle size={12} color="var(--success)" style={{ marginTop: 3, flexShrink: 0, opacity: 0.8 }} />
+                    <span style={{ fontFamily: 'Inter', fontSize: 12.5, color: 'var(--text-secondary)', lineHeight: 1.5 }}>{b}</span>
+                  </li>
+                ))}
+              </ul>
+
+              {/* Zone 5 — Tech footer */}
+              <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 8 }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
+                  {cs.tools.map((tool, ti) => (
+                    <span key={ti} style={{
+                      background: 'var(--bg)', border: '1px solid var(--border)',
+                      padding: '4px 9px', borderRadius: 'var(--radius-badge)',
+                      fontFamily: 'Inter', fontSize: 11, color: 'var(--text-tertiary)',
+                    }}>{tool}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
+
+
+      <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto', padding: '0 24px' }}>
 
       {/* Workflow Preview Modal */}
       <AnimatePresence>
         {selectedWorkflow && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             onClick={() => setSelectedWorkflow(null)}
             style={{
               position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
@@ -1576,10 +1688,7 @@ function CaseStudies({ theme }: { theme: string }) {
               padding: 24, backdropFilter: 'blur(8px)'
             }}
           >
-            <motion.div
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
+            <motion.div initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 20 }}
               onClick={e => e.stopPropagation()}
               style={{
                 background: 'var(--surface)', border: '1px solid var(--border)',
@@ -1592,32 +1701,28 @@ function CaseStudies({ theme }: { theme: string }) {
                   <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 24, color: 'var(--text-primary)' }}>{selectedWorkflow.client} Workflow</h3>
                   <p style={{ fontFamily: 'Inter', fontSize: 14, color: 'var(--text-secondary)' }}>Stylized preview of the automation architecture</p>
                 </div>
-                <button 
-                  onClick={() => setSelectedWorkflow(null)}
+                <button onClick={() => setSelectedWorkflow(null)}
                   style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer' }}
-                >
-                  Close
-                </button>
+                >Close</button>
               </div>
               <div style={{ padding: 40, background: theme === 'dark' ? '#000' : 'var(--bg)', position: 'relative', overflow: 'auto' }}>
-                <div style={{ 
-                  width: '100%', height: 500, 
+                <div style={{
+                  width: '100%', height: 500,
                   background: 'url(https://picsum.photos/seed/workflow/1200/800) center/cover no-repeat',
                   filter: 'blur(40px) brightness(0.5)',
                   position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, opacity: 0.3
                 }} />
                 <div style={{ position: 'relative', zIndex: 2 }}>
-                   <WorkflowDiagram diagram={selectedWorkflow.diagram} theme={theme} />
+                  <WorkflowDiagram diagram={selectedWorkflow.diagram} theme={theme} />
                 </div>
-                <div style={{ 
-                  marginTop: 40, padding: 24, background: 'rgba(255,255,255,0.03)', 
+                <div style={{
+                  marginTop: 40, padding: 24, background: 'rgba(255,255,255,0.03)',
                   borderRadius: 12, border: '1px solid var(--border)',
-                  fontFamily: 'Inter', fontSize: 14, color: 'var(--text-secondary)',
-                  lineHeight: 1.6
+                  fontFamily: 'Inter', fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.6
                 }}>
                   <strong style={{ color: 'var(--text-primary)', display: 'block', marginBottom: 8 }}>Architecture Overview:</strong>
-                  This workflow utilizes a hub-and-spoke model where <strong>{selectedWorkflow.tools[0]}</strong> acts as the central orchestrator. 
-                  Data is ingested via webhooks, processed through AI logic gates for classification, and then distributed to 
+                  This workflow utilizes a hub-and-spoke model where <strong>{selectedWorkflow.tools[0]}</strong> acts as the central orchestrator.
+                  Data is ingested via webhooks, processed through AI logic gates for classification, and then distributed to
                   <strong> {selectedWorkflow.tools.slice(1, 4).join(', ')}</strong>.
                 </div>
               </div>
@@ -1625,6 +1730,7 @@ function CaseStudies({ theme }: { theme: string }) {
           </motion.div>
         )}
       </AnimatePresence>
+      </div>
     </section>
   );
 }
@@ -1827,77 +1933,499 @@ function CTA() {
   );
 }
 
-function GoogleCalendar() {
-  useEffect(() => {
-    if ((window as any).Cal) return;
-    (function (C: any, A: string, L: string) {
-      const p = (a: any, ar: any) => { a.q.push(ar); };
-      const d = C.document;
-      C.Cal = C.Cal || function (...args: any[]) {
-        const cal = C.Cal;
-        if (!cal.loaded) {
-          cal.ns = {};
-          cal.q = cal.q || [];
-          const s = d.createElement('script');
-          s.src = A;
-          d.head.appendChild(s);
-          cal.loaded = true;
-        }
-        if (args[0] === L) {
-          const api = (...a: any[]) => p(api, a);
-          const ns = args[1];
-          (api as any).q = (api as any).q || [];
-          if (typeof ns === 'string') {
-            cal.ns[ns] = cal.ns[ns] || api;
-            p(cal.ns[ns], args);
-            p(cal, ['initNamespace', ns]);
-          } else { p(cal, args); }
-          return;
-        }
-        p(cal, args);
-      };
-    })(window, 'https://app.cal.com/embed/embed.js', 'init');
+const CAL_DAY_HEADERS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+const CAL_EVENT_TYPE_ID = 5528727;
+const CAL_API_KEY = import.meta.env.VITE_CAL_API_KEY as string;
 
-    const Cal = (window as any).Cal;
-    Cal('init', '30min', { origin: 'https://app.cal.com' });
-    Cal.ns['30min']('inline', {
-      elementOrSelector: '#my-cal-inline-30min',
-      config: { layout: 'month_view', useSlotsViewOnSmallScreen: 'true' },
-      calLink: 'renthelautomations/30min',
-    });
-    Cal.ns['30min']('ui', { hideEventTypeDetails: false, layout: 'month_view' });
+function utcToLabel(utcIso: string): string {
+  const d = new Date(utcIso);
+  const h = (d.getUTCHours() + 8) % 24;
+  const min = d.getUTCMinutes();
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  const h12 = h % 12 || 12;
+  return `${h12}:${min.toString().padStart(2, '0')} ${ampm}`;
+}
+
+function GoogleCalendar() {
+  const [step, setStep]               = useState<1 | 2>(1);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedSlot, setSelectedSlot] = useState<{ time: string; label: string } | null>(null);
+  const [slots, setSlots]             = useState<{ time: string; label: string }[]>([]);
+  const [slotsLoading, setSlotsLoading] = useState(false);
+  const [currentMonth, setCurrentMonth] = useState(() => {
+    const d = new Date();
+    return new Date(d.getFullYear(), d.getMonth(), 1);
+  });
+  const [form, setForm]       = useState({ name: '', email: '', notes: '' });
+  const [submitted, setSubmitted] = useState(false);
+  const [formError, setFormError]   = useState('');
+
+  // Fetch real availability from Cal.com when date changes
+  useEffect(() => {
+    if (!selectedDate) { setSlots([]); return; }
+    setSlotsLoading(true);
+    setSlots([]);
+    setSelectedSlot(null);
+    const y = selectedDate.getFullYear(), m = selectedDate.getMonth(), d = selectedDate.getDate();
+    // midnight PHT (UTC+8) = UTC midnight - 8 h; end of PHT day = UTC 15:59
+    const startUTC = new Date(Date.UTC(y, m, d) - 8 * 3600 * 1000).toISOString();
+    const endUTC   = new Date(Date.UTC(y, m, d, 15, 59, 0)).toISOString();
+    const url = `https://api.cal.com/v2/slots/available?startTime=${encodeURIComponent(startUTC)}&endTime=${encodeURIComponent(endUTC)}&eventTypeSlug=30min&usernameList[0]=renthelautomations`;
+    fetch(url, { headers: { Authorization: `Bearer ${CAL_API_KEY}`, 'cal-api-version': '2024-09-23' } })
+      .then(r => r.json())
+      .then(data => {
+        if (data.status === 'success' && data.data?.slots) {
+          const dateSlots: { time: string }[] = Object.values(data.data.slots).flat() as { time: string }[];
+          setSlots(dateSlots.map(s => ({ time: s.time, label: utcToLabel(s.time) })));
+        }
+        setSlotsLoading(false);
+      })
+      .catch(() => setSlotsLoading(false));
+  }, [selectedDate]);
+
+  const today = useMemo(() => {
+    const d = new Date(); d.setHours(0, 0, 0, 0); return d;
   }, []);
 
+  const monthLabel = useMemo(() =>
+    currentMonth.toLocaleString('en-US', { month: 'long', year: 'numeric' }),
+    [currentMonth]
+  );
+
+  const calDays = useMemo(() => {
+    const y = currentMonth.getFullYear(), m = currentMonth.getMonth();
+    const firstDow = new Date(y, m, 1).getDay();
+    const total = new Date(y, m + 1, 0).getDate();
+    const cells: (Date | null)[] = Array(firstDow).fill(null);
+    for (let d = 1; d <= total; d++) cells.push(new Date(y, m, d));
+    return cells;
+  }, [currentMonth]);
+
+  const isAvail  = (d: Date) => d.getDay() !== 0 && d.getDay() !== 6 && d >= today;
+  const isSel    = (d: Date) => !!selectedDate &&
+    d.getFullYear() === selectedDate.getFullYear() &&
+    d.getMonth()    === selectedDate.getMonth()    &&
+    d.getDate()     === selectedDate.getDate();
+  const isToday  = (d: Date) => d.getTime() === today.getTime();
+  const goMonth  = (dir: 1 | -1) =>
+    setCurrentMonth(m => new Date(m.getFullYear(), m.getMonth() + dir, 1));
+
+  const fmtLong  = (d: Date) => d.toLocaleDateString('en-US', { weekday: 'long',  month: 'long',  day: 'numeric', year: 'numeric' });
+  const fmtShort = (d: Date) => d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+
+  const handleConfirm = () => {
+    if (!form.name.trim() || !form.email.trim()) {
+      setFormError('Please fill in your name and email.'); return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+      setFormError('Please enter a valid email address.'); return;
+    }
+    if (!selectedSlot) return;
+
+    // Show success immediately — fire API in background
+    setSubmitted(true);
+
+    const visitorTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    fetch('https://api.cal.com/v2/bookings', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${CAL_API_KEY}`,
+        'cal-api-version': '2024-08-13',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        start: selectedSlot.time,
+        eventTypeId: CAL_EVENT_TYPE_ID,
+        attendee: { name: form.name, email: form.email, timeZone: visitorTz, language: 'en' },
+        ...(form.notes ? { metadata: { notes: form.notes } } : {}),
+      }),
+    }).catch(() => {});
+  };
+
+  const inputSt: React.CSSProperties = {
+    width: '100%', background: 'var(--bg)', border: '1px solid var(--border)',
+    borderRadius: 10, padding: '12px 16px', fontFamily: 'Inter', fontSize: 14,
+    color: 'var(--text-primary)', outline: 'none', boxSizing: 'border-box',
+    transition: 'border-color 0.15s',
+  };
+
+  /* ── Success state ── */
+  if (submitted) {
+    return (
+      <section id="calendar" style={{ padding: 'var(--section-padding) 0', background: 'var(--bg)' }}>
+        <div style={{ maxWidth: 600, margin: '0 auto', padding: '0 24px' }}>
+          <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }}
+            style={{
+              background: 'var(--surface)', border: '1px solid var(--border)',
+              borderRadius: 'var(--radius-card)', padding: '64px 48px', textAlign: 'center',
+            }}>
+            <div style={{
+              width: 64, height: 64, borderRadius: '50%', margin: '0 auto 24px',
+              background: 'rgba(200,200,200,0.08)', border: '1px solid rgba(200,200,200,0.25)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              color: 'var(--accent)',
+            }}><Check size={28} strokeWidth={2} /></div>
+            <h2 style={{ fontFamily: 'Space Grotesk', fontSize: 28, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 12 }}>
+              You're all set!
+            </h2>
+            <p style={{ fontFamily: 'Inter', fontSize: 15, color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: 28 }}>
+              A confirmation has been sent to{' '}
+              <span style={{ color: 'var(--text-primary)', fontWeight: 500 }}>{form.email}</span>.
+            </p>
+            <div style={{
+              background: 'rgba(200,200,200,0.05)', border: '1px solid var(--border)',
+              borderRadius: 12, padding: '20px 24px', display: 'inline-block', textAlign: 'left',
+            }}>
+              <div style={{ fontFamily: 'Space Grotesk', fontWeight: 600, fontSize: 14, color: 'var(--text-primary)', marginBottom: 10 }}>
+                Discovery Call with Renthel
+              </div>
+              {([
+                { icon: <CalendarDays size={14} />, text: selectedDate ? fmtLong(selectedDate) : '' },
+                { icon: <Clock size={14} />,        text: `${selectedSlot?.label} PHT` },
+                { icon: <Video size={14} />,         text: '30 min · Google Meet' },
+                { icon: <Gift size={14} />,          text: 'Free — no obligation' },
+              ] as { icon: React.ReactNode; text: string }[]).map(({ icon, text }, i) => (
+                <div key={i} style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 6 }}>
+                  <span style={{ color: 'var(--text-tertiary)', display: 'flex', flexShrink: 0 }}>{icon}</span>
+                  <span style={{ fontFamily: 'Inter', fontSize: 13, color: 'var(--text-secondary)' }}>{text}</span>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+    );
+  }
+
+  /* ── Main calendar ── */
   return (
     <section id="calendar" style={{ padding: 'var(--section-padding) 0', background: 'var(--bg)' }}>
       <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto', padding: '0 24px' }}>
 
+        {/* Section header */}
         <div style={{ textAlign: 'center', marginBottom: 56 }}>
           <span style={{
             fontFamily: 'Inter', fontSize: 11, fontWeight: 600,
             letterSpacing: '0.08em', textTransform: 'uppercase',
-            color: 'var(--accent)', display: 'block', marginBottom: 12
+            color: 'var(--accent)', display: 'block', marginBottom: 12,
           }}>Book a Call</span>
           <h2 style={{
             fontFamily: 'Space Grotesk, sans-serif', fontSize: 'clamp(32px, 4vw, 48px)',
             lineHeight: 1.1, color: 'var(--text-primary)', fontWeight: 600,
-            letterSpacing: '-0.02em', marginBottom: 16
-          }}>
-            Let's find your time.
-          </h2>
+            letterSpacing: '-0.02em', marginBottom: 16,
+          }}>Let's find your time.</h2>
           <p style={{
             fontFamily: 'Inter', fontSize: 16, color: 'var(--text-secondary)',
-            maxWidth: 480, margin: '0 auto', lineHeight: 1.7
-          }}>
-            Pick a date, choose a time, and get instant confirmation.
-          </p>
+            maxWidth: 480, margin: '0 auto', lineHeight: 1.7,
+          }}>Pick a slot and confirm — you'll get a calendar invite immediately.</p>
         </div>
 
-        <div
-          id="my-cal-inline-30min"
-          style={{ width: '100%', height: 700, overflow: 'scroll', borderRadius: 'var(--radius-card)' }}
-        />
+        {/* Card */}
+        <div style={{
+          maxWidth: 900, margin: '0 auto',
+          background: 'var(--surface)', border: '1px solid var(--border)',
+          borderRadius: 'var(--radius-card)', overflow: 'hidden',
+          position: 'relative', zIndex: 1,
+        }}>
 
+          {/* Step indicator */}
+          <div style={{ display: 'flex', borderBottom: '1px solid var(--border)' }}>
+            {([{ n: 1, label: 'Choose a time' }, { n: 2, label: 'Your details' }] as { n: 1|2; label: string }[]).map(({ n, label }, i) => {
+              const active = step === n, done = step > n;
+              return (
+                <div key={n} style={{
+                  flex: 1, display: 'flex', alignItems: 'center', gap: 12,
+                  padding: '18px 28px',
+                  borderRight: i === 0 ? '1px solid var(--border)' : 'none',
+                  background: active ? 'rgba(200,200,200,0.03)' : 'transparent',
+                }}>
+                  <div style={{
+                    width: 28, height: 28, borderRadius: '50%', flexShrink: 0,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontFamily: 'Inter', fontSize: 12, fontWeight: 600,
+                    border: active ? '1.5px solid var(--accent)'
+                           : done   ? 'none'
+                           :          '1.5px solid var(--border)',
+                    background: done ? 'var(--accent)' : 'transparent',
+                    color: active ? 'var(--accent)' : done ? 'var(--bg)' : 'var(--text-tertiary)',
+                  }}>{done ? '✓' : n}</div>
+                  <div>
+                    <div style={{
+                      fontFamily: 'Inter', fontSize: 10, fontWeight: 600,
+                      textTransform: 'uppercase', letterSpacing: '0.08em',
+                      color: active ? 'var(--accent)' : 'var(--text-tertiary)',
+                    }}>Step {n}</div>
+                    <div style={{
+                      fontFamily: 'Inter', fontSize: 13, fontWeight: 500,
+                      color: active ? 'var(--text-primary)' : 'var(--text-tertiary)',
+                    }}>{label}</div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* ── Step 1: Date + Time ── */}
+          {step === 1 && (
+            <>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', minHeight: 460 }} className="cal-step1-grid">
+
+              {/* Left: Calendar grid */}
+              <div style={{ padding: '32px', borderRight: '1px solid var(--border)' }}>
+                {/* Month nav */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
+                  <button onClick={() => goMonth(-1)} style={{
+                    background: 'none', border: '1px solid var(--border)', borderRadius: 8,
+                    width: 34, height: 34, cursor: 'pointer', color: 'var(--text-secondary)', fontSize: 18,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'border-color 0.15s',
+                  }}
+                  onMouseEnter={e => (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-hover)'}
+                  onMouseLeave={e => (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'}
+                  >‹</button>
+                  <span style={{ fontFamily: 'Space Grotesk', fontWeight: 600, fontSize: 16, color: 'var(--text-primary)' }}>
+                    {monthLabel}
+                  </span>
+                  <button onClick={() => goMonth(1)} style={{
+                    background: 'none', border: '1px solid var(--border)', borderRadius: 8,
+                    width: 34, height: 34, cursor: 'pointer', color: 'var(--text-secondary)', fontSize: 18,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'border-color 0.15s',
+                  }}
+                  onMouseEnter={e => (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-hover)'}
+                  onMouseLeave={e => (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'}
+                  >›</button>
+                </div>
+
+                {/* Day headers */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 2, marginBottom: 6 }}>
+                  {CAL_DAY_HEADERS.map(h => (
+                    <div key={h} style={{
+                      textAlign: 'center', fontFamily: 'Inter', fontSize: 11, fontWeight: 600,
+                      color: 'var(--text-tertiary)', textTransform: 'uppercase',
+                      letterSpacing: '0.05em', padding: '4px 0',
+                    }}>{h}</div>
+                  ))}
+                </div>
+
+                {/* Day cells */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 3 }}>
+                  {calDays.map((date, i) => {
+                    if (!date) return <div key={`e-${i}`} />;
+                    const avail = isAvail(date), sel = isSel(date), tod = isToday(date);
+                    return (
+                      <button key={i} onClick={() => { if (avail) { setSelectedDate(date); setSelectedSlot(null); } }}
+                        disabled={!avail}
+                        style={{
+                          aspectRatio: '1', borderRadius: 8,
+                          border: sel ? '1.5px solid rgba(200,200,200,0.55)'
+                                : tod ? '1px solid rgba(200,200,200,0.28)'
+                                :        '1px solid transparent',
+                          background: sel ? 'rgba(200,200,200,0.14)' : 'transparent',
+                          color: 'var(--text-primary)',
+                          fontFamily: 'Inter', fontSize: 13, fontWeight: sel ? 600 : 400,
+                          cursor: avail ? 'pointer' : 'default',
+                          opacity: avail ? 1 : 0.22,
+                          transition: 'background 0.12s, border-color 0.12s',
+                        }}
+                        onMouseEnter={e => { if (avail && !sel) (e.currentTarget as HTMLElement).style.background = 'rgba(200,200,200,0.08)'; }}
+                        onMouseLeave={e => { if (!sel) (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
+                      >{date.getDate()}</button>
+                    );
+                  })}
+                </div>
+
+                <p style={{ fontFamily: 'Inter', fontSize: 11, color: 'var(--text-tertiary)', marginTop: 20, lineHeight: 1.7 }}>
+                  Times shown in Philippine Time (PHT, GMT+8).<br />Weekdays only — Mon to Fri.
+                </p>
+              </div>
+
+              {/* Right: Time slots */}
+              <div style={{ padding: '32px', display: 'flex', flexDirection: 'column', background: 'var(--surface)' }}>
+                {!selectedDate ? (
+                  <div style={{
+                    flex: 1, display: 'flex', flexDirection: 'column',
+                    alignItems: 'center', justifyContent: 'center', gap: 12,
+                  }}>
+                    <CalendarDays size={36} style={{ opacity: 0.25, color: 'var(--text-tertiary)' }} />
+                    <div style={{ fontFamily: 'Inter', fontSize: 14, color: 'var(--text-tertiary)', textAlign: 'center', lineHeight: 1.6 }}>
+                      Select a date to see<br />available time slots
+                    </div>
+                  </div>
+                ) : (
+                  <motion.div key={selectedDate.toDateString()}
+                    initial={{ opacity: 0, x: 8 }} animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.18 }}
+                    style={{ flex: 1, display: 'flex', flexDirection: 'column' }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
+                      <div style={{ fontFamily: 'Space Grotesk', fontWeight: 600, fontSize: 16, color: 'var(--text-primary)' }}>
+                        {fmtShort(selectedDate)}
+                      </div>
+                      <AnimatePresence>
+                        {selectedSlot && (
+                          <motion.button
+                            initial={{ opacity: 0, x: 6 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0 }}
+                            onClick={() => setStep(2)}
+                            style={{
+                              padding: '7px 16px', background: 'var(--gradient)',
+                              border: 'none', borderRadius: 8, color: '#fff',
+                              fontFamily: 'Inter', fontSize: 13, fontWeight: 600,
+                              cursor: 'pointer', letterSpacing: '0.01em', transition: 'opacity 0.15s',
+                            }}
+                            onMouseEnter={e => (e.currentTarget as HTMLElement).style.opacity = '0.85'}
+                            onMouseLeave={e => (e.currentTarget as HTMLElement).style.opacity = '1'}
+                          >Next →</motion.button>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                    <div style={{ fontFamily: 'Inter', fontSize: 12, color: 'var(--text-tertiary)', marginBottom: 18 }}>
+                      Pick an available time slot
+                    </div>
+
+                    {slotsLoading ? (
+                      <div style={{ fontFamily: 'Inter', fontSize: 13, color: 'var(--text-tertiary)', padding: '24px 0', textAlign: 'center' }}>
+                        Loading available times...
+                      </div>
+                    ) : slots.length === 0 ? (
+                      <div style={{ fontFamily: 'Inter', fontSize: 13, color: 'var(--text-tertiary)', padding: '24px 0', textAlign: 'center', lineHeight: 1.6 }}>
+                        No available slots on this day.<br />Please choose another date.
+                      </div>
+                    ) : (
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+                        {slots.map(slot => {
+                          const sel = selectedSlot?.time === slot.time;
+                          return (
+                            <button key={slot.time} onClick={() => setSelectedSlot(slot)} style={{
+                              padding: '11px 8px', borderRadius: 10, textAlign: 'center',
+                              border: sel ? '1.5px solid rgba(200,200,200,0.5)' : '1px solid var(--border)',
+                              background: sel ? 'rgba(200,200,200,0.12)' : 'var(--bg)',
+                              color: sel ? 'var(--text-primary)' : 'var(--text-secondary)',
+                              fontFamily: 'Inter', fontSize: 13, fontWeight: sel ? 600 : 400,
+                              cursor: 'pointer', transition: 'border-color 0.14s, background 0.14s, color 0.14s',
+                            }}
+                            onMouseEnter={e => { if (!sel) { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(200,200,200,0.3)'; (e.currentTarget as HTMLElement).style.color = 'var(--text-primary)'; } }}
+                            onMouseLeave={e => { if (!sel) { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'; (e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)'; } }}
+                            >{slot.label}</button>
+                          );
+                        })}
+                      </div>
+                    )}
+
+                  </motion.div>
+                )}
+              </div>
+            </div>
+
+            </>
+          )}
+
+          {/* ── Step 2: Form ── */}
+          {step === 2 && (
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+              style={{ padding: '40px 48px' }}
+            >
+              {/* Selected slot chip */}
+              <div style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12,
+                background: 'rgba(200,200,200,0.05)', border: '1px solid rgba(200,200,200,0.14)',
+                borderRadius: 12, padding: '16px 20px', marginBottom: 32,
+              }}>
+                <div>
+                  <div style={{ fontFamily: 'Inter', fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-tertiary)', marginBottom: 4 }}>
+                    Selected Slot
+                  </div>
+                  <div style={{ fontFamily: 'Inter', fontSize: 14, fontWeight: 600, color: 'var(--text-primary)' }}>
+                    {selectedDate && fmtLong(selectedDate)} · {selectedSlot?.label} PHT
+                  </div>
+                </div>
+                <button onClick={() => setStep(1)} style={{
+                  background: 'none', border: '1px solid var(--border)', borderRadius: 8,
+                  padding: '6px 16px', fontFamily: 'Inter', fontSize: 12, fontWeight: 500,
+                  color: 'var(--text-secondary)', cursor: 'pointer', transition: 'border-color 0.15s, color 0.15s, background 0.15s',
+                }}
+                onMouseEnter={e => {
+                  const el = e.currentTarget as HTMLElement;
+                  el.style.borderColor = '#3EC68A';
+                  el.style.color = '#3EC68A';
+                  el.style.background = 'rgba(62,198,138,0.07)';
+                }}
+                onMouseLeave={e => {
+                  const el = e.currentTarget as HTMLElement;
+                  el.style.borderColor = 'var(--border)';
+                  el.style.color = 'var(--text-secondary)';
+                  el.style.background = 'none';
+                }}
+                >Change</button>
+              </div>
+
+              {/* Form fields */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }} className="cal-form-grid">
+                  <div>
+                    <label style={{ fontFamily: 'Inter', fontSize: 13, fontWeight: 500, color: 'var(--text-primary)', display: 'block', marginBottom: 8 }}>
+                      Full Name <span style={{ color: '#f87171' }}>*</span>
+                    </label>
+                    <input type="text" value={form.name}
+                      onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                      placeholder="Your full name" style={inputSt}
+                      onFocus={e => (e.target as HTMLInputElement).style.borderColor = 'rgba(200,200,200,0.4)'}
+                      onBlur={e  => (e.target as HTMLInputElement).style.borderColor = 'var(--border)'}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ fontFamily: 'Inter', fontSize: 13, fontWeight: 500, color: 'var(--text-primary)', display: 'block', marginBottom: 8 }}>
+                      Email Address <span style={{ color: '#f87171' }}>*</span>
+                    </label>
+                    <input type="email" value={form.email}
+                      onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                      placeholder="you@company.com" style={inputSt}
+                      onFocus={e => (e.target as HTMLInputElement).style.borderColor = 'rgba(200,200,200,0.4)'}
+                      onBlur={e  => (e.target as HTMLInputElement).style.borderColor = 'var(--border)'}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label style={{ fontFamily: 'Inter', fontSize: 13, fontWeight: 500, color: 'var(--text-primary)', display: 'block', marginBottom: 8 }}>
+                    What would you like to automate?{' '}
+                    <span style={{ fontFamily: 'Inter', fontSize: 12, color: 'var(--text-tertiary)', fontWeight: 400 }}>(optional)</span>
+                  </label>
+                  <textarea value={form.notes}
+                    onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
+                    placeholder="Tell me about your business and what you'd like to streamline..."
+                    rows={4}
+                    style={{ ...inputSt, resize: 'vertical', minHeight: 100 }}
+                    onFocus={e => (e.target as HTMLTextAreaElement).style.borderColor = 'rgba(200,200,200,0.4)'}
+                    onBlur={e  => (e.target as HTMLTextAreaElement).style.borderColor = 'var(--border)'}
+                  />
+                </div>
+
+                {formError && (
+                  <div style={{
+                    fontFamily: 'Inter', fontSize: 13, color: '#f87171',
+                    padding: '10px 16px', background: 'rgba(248,113,113,0.08)',
+                    border: '1px solid rgba(248,113,113,0.2)', borderRadius: 8,
+                  }}>{formError}</div>
+                )}
+
+                <button onClick={handleConfirm} style={{
+                  padding: '14px 28px', borderRadius: 10, border: 'none',
+                  background: 'var(--gradient)', color: '#fff',
+                  fontFamily: 'Inter', fontSize: 15, fontWeight: 600,
+                  cursor: 'pointer', letterSpacing: '0.01em', width: '100%',
+                  transition: 'opacity 0.15s',
+                }}
+                onMouseEnter={e => (e.currentTarget as HTMLElement).style.opacity = '0.85'}
+                onMouseLeave={e => (e.currentTarget as HTMLElement).style.opacity = '1'}
+                >Confirm Booking</button>
+
+                <p style={{ fontFamily: 'Inter', fontSize: 12, color: 'var(--text-tertiary)', textAlign: 'center', lineHeight: 1.6 }}>
+                  You'll receive a calendar invite and confirmation email shortly after booking.
+                </p>
+              </div>
+            </motion.div>
+          )}
+
+        </div>
       </div>
     </section>
   );
@@ -2211,6 +2739,11 @@ export default function App() {
         --accent-glow: rgba(63, 63, 70, 0.05);
         --success: #10B981;
         --gradient: linear-gradient(135deg, #18181B 0%, #3F3F46 100%);
+        background-image:
+          radial-gradient(ellipse 110% 45% at 50% 0%, rgba(99, 102, 241, 0.06) 0%, transparent 70%),
+          radial-gradient(ellipse 60% 30% at 100% 100%, rgba(139, 92, 246, 0.04) 0%, transparent 60%),
+          radial-gradient(circle at 1.5px 1.5px, rgba(0, 0, 0, 0.1) 1px, transparent 0);
+        background-size: 100% auto, 100% auto, 32px 32px;
       }
 
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -2404,6 +2937,12 @@ export default function App() {
       @media (max-width: 380px) {
         .faq-row > div { width: 100% !important; }
       }
+
+      @media (max-width: 640px) {
+        .cal-step1-grid { grid-template-columns: 1fr !important; }
+        .cal-step1-grid > div:first-child { border-right: none !important; border-bottom: 1px solid var(--border); }
+        .cal-form-grid { grid-template-columns: 1fr !important; }
+      }
     `;
     document.head.appendChild(style);
     return () => {
@@ -2417,7 +2956,7 @@ export default function App() {
   return (
     <>
       <ScrollProgress />
-      <CursorGlow />
+      <CursorGlow theme={theme} />
       <Background theme={theme} />
       <Navbar theme={theme} toggleTheme={toggleTheme} />
       <main>
