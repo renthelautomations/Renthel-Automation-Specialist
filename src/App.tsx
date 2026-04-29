@@ -851,28 +851,6 @@ function About() {
               </p>
             </div>
 
-            {/* Focus block */}
-            <div style={{
-              borderTop: '1px solid var(--border)', paddingTop: 24,
-              display: 'flex', flexDirection: 'column', gap: 12
-            }}>
-              <span style={{
-                fontFamily: 'Inter', fontSize: 11, fontWeight: 600,
-                letterSpacing: '0.08em', textTransform: 'uppercase',
-                color: 'var(--text-tertiary)'
-              }}>Focus</span>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-                {['n8n', 'Zapier', 'Make.com', 'AI Integrations', 'CRM', 'Workflows'].map(chip => (
-                  <span key={chip} style={{
-                    fontFamily: 'Inter', fontSize: 13, fontWeight: 500,
-                    color: 'var(--text-secondary)', padding: '6px 14px',
-                    background: 'var(--surface)', border: '1px solid var(--border)',
-                    borderRadius: 100
-                  }}>{chip}</span>
-                ))}
-              </div>
-            </div>
-
           </div>
 
         </div>
