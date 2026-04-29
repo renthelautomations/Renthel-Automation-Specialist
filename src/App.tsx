@@ -2645,6 +2645,45 @@ function FAQ() {
   );
 }
 
+function StickyBookCTA() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setVisible(window.scrollY > window.innerHeight * 0.8);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  return (
+    <AnimatePresence>
+      {visible && (
+        <motion.button
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 16 }}
+          transition={{ duration: 0.25 }}
+          onClick={() => document.getElementById('calendar')?.scrollIntoView({ behavior: 'smooth' })}
+          style={{
+            position: 'fixed', bottom: 28, right: 28, zIndex: 200,
+            display: 'flex', alignItems: 'center', gap: 8,
+            padding: '12px 22px',
+            background: 'var(--gradient)',
+            border: 'none', borderRadius: 99,
+            color: '#fff', fontFamily: 'Inter', fontSize: 14, fontWeight: 600,
+            cursor: 'pointer', letterSpacing: '0.01em',
+            boxShadow: '0 4px 24px rgba(62,198,138,0.35), 0 2px 8px rgba(0,0,0,0.2)',
+          }}
+          onMouseEnter={e => (e.currentTarget as HTMLElement).style.opacity = '0.88'}
+          onMouseLeave={e => (e.currentTarget as HTMLElement).style.opacity = '1'}
+        >
+          <CalendarDays size={15} />
+          Book a Call
+        </motion.button>
+      )}
+    </AnimatePresence>
+  );
+}
+
 function Footer() {
   return (
     <footer style={{
@@ -2956,6 +2995,7 @@ export default function App() {
     <>
       <ScrollProgress />
       <CursorGlow theme={theme} />
+      <StickyBookCTA />
       <Background theme={theme} />
       <Navbar theme={theme} toggleTheme={toggleTheme} />
       <main>
