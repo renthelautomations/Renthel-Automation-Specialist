@@ -2962,13 +2962,12 @@ export default function App() {
       <main>
         <Hero />
         <LogoMarquee />
-        <About />
-        <CaseStudies theme={theme} />
         <Workflows />
-        <TechStack theme={theme} />
-        <ROICalculator />
+        <CaseStudies theme={theme} />
         <Process />
+        <TechStack theme={theme} />
         <Testimonials />
+        <ROICalculator />
         <GoogleCalendar />
         <FAQ />
       </main>
