@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import profilePic from '../Assets/ren techy2.png';
+import profilePic from '../Assets/ren techy2 copy.png';
 import logoImg   from '../Assets/logo.png';
 import {
   siN8n, siZapier, siMake, siAirtable, siNotion,
@@ -739,8 +739,8 @@ function About() {
                 position: 'absolute', inset: -2,
                 borderRadius: 24,
                 background: 'linear-gradient(135deg, var(--accent) 0%, transparent 70%)',
-                opacity: 0.25,
-                filter: 'blur(16px)',
+                opacity: 0.08,
+                filter: 'blur(10px)',
                 zIndex: 0
               }} />
               <img
@@ -2576,7 +2576,9 @@ export default function App() {
         .two-col { grid-template-columns: 1fr !important; }
         .three-col { grid-template-columns: 1fr !important; }
         .about-grid { grid-template-columns: 1fr !important; gap: 48px !important; }
+        .about-grid > div:first-child { justify-content: center !important; align-items: center !important; text-align: center; }
         .about-grid > div:first-child img { max-width: 280px; width: 100%; }
+        .about-grid > div:first-child > div { margin: 0 auto; }
         .calendar-grid { grid-template-columns: 1fr !important; }
         .workflow-fifth { max-width: 100% !important; }
         .footer-inner { flex-direction: column; text-align: center; align-items: center; gap: 12px; }
