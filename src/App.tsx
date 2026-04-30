@@ -2993,11 +2993,27 @@ function GoogleCalendar() {
                   cursor: booking ? 'not-allowed' : 'pointer',
                   letterSpacing: '0.01em', width: '100%',
                   transition: 'opacity 0.15s',
-                  opacity: booking ? 0.65 : 1,
+                  opacity: booking ? 0.85 : 1,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
                 }}
                 onMouseEnter={e => { if (!booking) (e.currentTarget as HTMLElement).style.opacity = '0.85'; }}
                 onMouseLeave={e => { if (!booking) (e.currentTarget as HTMLElement).style.opacity = '1'; }}
-                >{booking ? 'Booking…' : 'Confirm Booking'}</button>
+                >
+                  {booking ? (
+                    <>
+                      <motion.svg
+                        width={18} height={18} viewBox="0 0 18 18"
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 0.9, repeat: Infinity, ease: 'linear' }}
+                        style={{ flexShrink: 0 }}
+                      >
+                        <circle cx={9} cy={9} r={7} fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth={2} />
+                        <path d="M9 2 A7 7 0 0 1 16 9" fill="none" stroke="#fff" strokeWidth={2} strokeLinecap="round" />
+                      </motion.svg>
+                      Booking…
+                    </>
+                  ) : 'Confirm Booking'}
+                </button>
 
                 <p style={{ fontFamily: 'Inter', fontSize: 12, color: 'var(--text-tertiary)', textAlign: 'center', lineHeight: 1.6 }}>
                   You'll receive a calendar invite and confirmation email shortly after booking.
