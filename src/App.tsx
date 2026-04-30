@@ -2384,9 +2384,11 @@ function Testimonials() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }} className="testimonials-grid">
           {TESTIMONIALS.map((t, i) => (
             <div key={i} style={{
-              background: 'var(--surface)', border: '1px solid var(--border)',
+              background: 'rgba(62,198,138,0.05)',
+              border: '1.5px solid rgba(62,198,138,0.3)',
               borderRadius: 'var(--radius-card)', padding: 32,
               display: 'flex', flexDirection: 'column', gap: 24,
+              boxShadow: '0 0 0 6px var(--bg)',
             }}>
               {/* Result stat */}
               <div style={{
