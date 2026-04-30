@@ -2560,7 +2560,7 @@ function CTA() {
 
 const CAL_DAY_HEADERS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 const CAL_EVENT_TYPE_ID = 5528727;
-const CAL_API_KEY = import.meta.env.VITE_CAL_API_KEY as string;
+const CAL_API_KEY = 'cal_live_0cde9f4dd74692719b31be9b1b3e36e5';
 
 function utcToLabel(utcIso: string): string {
   const d = new Date(utcIso);
