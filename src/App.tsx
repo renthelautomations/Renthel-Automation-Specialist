@@ -11,7 +11,8 @@ import {
   ChevronRight, ChevronLeft, Search, Layers, CheckCircle,
   Mail, Linkedin, ArrowRight, ExternalLink,
   Sun, Moon,
-  CalendarDays, Clock, Timer, Gift, Check, Video, Star
+  CalendarDays, Clock, Timer, Gift, Check, Video, Star,
+  Menu, X
 } from 'lucide-react';
 
 // --- DATA DEFINITIONS ---
@@ -502,82 +503,140 @@ function CursorGlow({ theme }: { theme: string }) {
   );
 }
 
+const NAV_LINKS = [
+  { id: 'about',   label: 'About'   },
+  { id: 'work',    label: 'Work'    },
+  { id: 'roi',     label: 'ROI'     },
+  { id: 'process', label: 'Process' },
+  { id: 'faq',     label: 'FAQ'     },
+];
+
 function Navbar({ theme, toggleTheme }: { theme: string; toggleTheme: () => void }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    setMenuOpen(false);
+    setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }), 10);
   };
+
   return (
-    <nav style={{
-      position: 'fixed', top: 0, left: 0, right: 0,
-      height: 'var(--nav-height)', zIndex: 100,
-      background: theme === 'dark' ? 'rgba(8, 9, 12, 0.9)' : 'rgba(249, 250, 251, 0.9)',
-      backdropFilter: 'blur(16px)',
-      WebkitBackdropFilter: 'blur(16px)',
-      borderBottom: '1px solid var(--border)',
-      display: 'flex', alignItems: 'center',
-      transition: 'var(--transition)'
-    }}>
-      <div style={{
-        width: '100%', maxWidth: 'var(--max-width)',
-        margin: '0 auto', padding: '0 24px',
-        display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+    <>
+      <nav style={{
+        position: 'fixed', top: 0, left: 0, right: 0,
+        height: 'var(--nav-height)', zIndex: 100,
+        background: theme === 'dark' ? 'rgba(8, 9, 12, 0.9)' : 'rgba(249, 250, 251, 0.9)',
+        backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)',
+        borderBottom: '1px solid var(--border)',
+        display: 'flex', alignItems: 'center',
+        transition: 'var(--transition)'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <img
-            src={logoImg}
-            alt="Renthel Cueto logo"
-            style={{
+        <div style={{
+          width: '100%', maxWidth: 'var(--max-width)',
+          margin: '0 auto', padding: '0 24px',
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+        }}>
+          {/* Logo */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <img src={logoImg} alt="Renthel Cueto logo" style={{
               height: 28, width: 'auto',
               filter: theme === 'dark' ? 'invert(1)' : 'none',
               transition: 'filter 0.3s ease'
-            }}
-          />
-          <span style={{ fontFamily: 'Inter', fontWeight: 500, fontSize: 15, color: 'var(--text-primary)' }}>
-            Renthel Cueto
-          </span>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 24 }} className="nav-links">
-          <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
-            {[
-              { id: 'about', label: 'About' },
-              { id: 'work', label: 'Work' },
-              { id: 'roi', label: 'ROI' },
-              { id: 'process', label: 'Process' },
-              { id: 'faq', label: 'FAQ' },
-            ].map(({ id, label }) => (
-              <button key={id} onClick={() => scrollTo(id)} style={{
-                background: 'none', border: 'none', cursor: 'pointer',
-                fontFamily: 'Inter', fontWeight: 400, fontSize: 14,
-                color: 'var(--text-secondary)', padding: 0,
-                transition: 'color 150ms ease'
-              }}
-              onMouseEnter={e => (e.target as HTMLElement).style.color = 'var(--text-primary)'}
-              onMouseLeave={e => (e.target as HTMLElement).style.color = 'var(--text-secondary)'}
-              >
-                {label}
-              </button>
-            ))}
+            }} />
+            <span style={{ fontFamily: 'Inter', fontWeight: 500, fontSize: 15, color: 'var(--text-primary)' }}>
+              Renthel Cueto
+            </span>
           </div>
-          
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <button
-              onClick={toggleTheme}
-              style={{
-                background: 'none', border: '1px solid var(--border)',
-                color: 'var(--text-secondary)', padding: '6px',
-                borderRadius: 'var(--radius-badge)', cursor: 'pointer',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                transition: 'var(--transition)'
-              }}
-              onMouseEnter={e => (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)'}
-              onMouseLeave={e => (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'}
+
+          {/* Desktop nav */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 24 }} className="nav-links">
+            <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
+              {NAV_LINKS.map(({ id, label }) => (
+                <button key={id} onClick={() => scrollTo(id)} style={{
+                  background: 'none', border: 'none', cursor: 'pointer',
+                  fontFamily: 'Inter', fontWeight: 400, fontSize: 14,
+                  color: 'var(--text-secondary)', padding: 0,
+                  transition: 'color 150ms ease'
+                }}
+                onMouseEnter={e => (e.target as HTMLElement).style.color = 'var(--text-primary)'}
+                onMouseLeave={e => (e.target as HTMLElement).style.color = 'var(--text-secondary)'}
+                >{label}</button>
+              ))}
+            </div>
+            <button onClick={toggleTheme} style={{
+              background: 'none', border: '1px solid var(--border)',
+              color: 'var(--text-secondary)', padding: '6px',
+              borderRadius: 'var(--radius-badge)', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              transition: 'var(--transition)'
+            }}
+            onMouseEnter={e => (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)'}
+            onMouseLeave={e => (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'}
             >
               {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
             </button>
           </div>
+
+          {/* Mobile right: theme toggle + hamburger */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }} className="nav-mobile-controls">
+            <button onClick={toggleTheme} style={{
+              background: 'none', border: '1px solid var(--border)',
+              color: 'var(--text-secondary)', padding: '6px',
+              borderRadius: 'var(--radius-badge)', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+            </button>
+            <button onClick={() => setMenuOpen(o => !o)} style={{
+              background: 'none', border: '1px solid var(--border)',
+              color: 'var(--text-secondary)', padding: '6px',
+              borderRadius: 'var(--radius-badge)', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              {menuOpen ? <X size={18} /> : <Menu size={18} />}
+            </button>
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+
+      {/* Mobile dropdown menu */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2 }}
+            style={{
+              position: 'fixed', top: 'var(--nav-height)', left: 0, right: 0,
+              zIndex: 99,
+              background: theme === 'dark' ? 'rgba(8,9,12,0.97)' : 'rgba(249,250,251,0.97)',
+              backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)',
+              borderBottom: '1px solid var(--border)',
+              padding: '16px 24px 24px',
+              display: 'flex', flexDirection: 'column', gap: 4,
+            }}
+          >
+            {NAV_LINKS.map(({ id, label }) => (
+              <button key={id} onClick={() => scrollTo(id)} style={{
+                background: 'none', border: 'none', cursor: 'pointer',
+                fontFamily: 'Inter', fontWeight: 500, fontSize: 17,
+                color: 'var(--text-secondary)', padding: '12px 0',
+                textAlign: 'left', borderBottom: '1px solid var(--border)',
+                transition: 'color 150ms',
+              }}
+              onMouseEnter={e => (e.target as HTMLElement).style.color = 'var(--text-primary)'}
+              onMouseLeave={e => (e.target as HTMLElement).style.color = 'var(--text-secondary)'}
+              >{label}</button>
+            ))}
+            <button onClick={() => scrollTo('calendar')} style={{
+              marginTop: 12, padding: '13px', borderRadius: 10, border: 'none',
+              background: '#3EC68A', color: '#fff',
+              fontFamily: 'Inter', fontWeight: 600, fontSize: 15, cursor: 'pointer',
+            }}>Book a Call</button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
 
@@ -934,7 +993,7 @@ function Hero() {
               <div style={{ textAlign: 'center' }}>
                 <div style={{
                   fontFamily: 'Space Grotesk, sans-serif',
-                  fontSize: 42, lineHeight: 1,
+                  fontSize: 'clamp(28px, 7vw, 42px)', lineHeight: 1,
                   fontWeight: 600,
                   color: 'var(--text-primary)'
                 }}>
@@ -2286,7 +2345,7 @@ function Process() {
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)' }} className="process-grid">
             {STEPS.map((step, i) => (
-              <div key={i} style={{
+              <div key={i} className="process-step-col" style={{
                 display: 'flex', flexDirection: 'column', alignItems: 'center',
                 padding: '0 32px', position: 'relative', zIndex: 1,
               }}>
@@ -2695,7 +2754,7 @@ function GoogleCalendar() {
           }}>Let's find your time.</h2>
           <p style={{
             fontFamily: 'Inter', fontSize: 16, color: 'var(--text-secondary)',
-            margin: '0 auto', lineHeight: 1.7, whiteSpace: 'nowrap',
+            maxWidth: 480, margin: '0 auto', lineHeight: 1.7,
           }}>Pick a slot and confirm — you'll get a calendar invite immediately.</p>
         </div>
 
@@ -3257,6 +3316,7 @@ function StickyBookCTA() {
           exit={{ opacity: 0, y: 16 }}
           transition={{ duration: 0.25 }}
           onClick={() => document.getElementById('calendar')?.scrollIntoView({ behavior: 'smooth' })}
+          className="sticky-cta"
           style={{
             position: 'fixed', bottom: 28, right: 28, zIndex: 200,
             display: 'flex', alignItems: 'center', gap: 8,
@@ -3535,25 +3595,44 @@ export default function App() {
                     0 0 18px rgba(210, 210, 210, 0.07) !important;
       }
 
+      /* ── hide desktop nav links + theme toggle on mobile, show hamburger ── */
+      @media (min-width: 769px) {
+        .nav-mobile-controls { display: none !important; }
+      }
+      @media (max-width: 768px) {
+        .nav-links { display: none !important; }
+      }
+
+      @media (max-width: 1100px) {
+        .hero-side-diagram { display: none; }
+      }
+
       @media (max-width: 1024px) {
         .case-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
         .automation-grid { grid-template-columns: repeat(2, 1fr) !important; }
       }
 
+      @media (max-width: 900px) and (min-width: 641px) {
+        .testimonials-grid { grid-template-columns: 1fr 1fr !important; }
+      }
+
       @media (max-width: 768px) {
-        :root { --section-padding: 80px; --card-padding: 24px; }
-        .nav-links button { display: none; }
-        .nav-links { gap: 16px; }
-        .two-col { grid-template-columns: 1fr !important; }
-        .three-col { grid-template-columns: 1fr !important; }
+        :root { --section-padding: 72px; --card-padding: 20px; }
+
+        /* Grids → single column */
+        .two-col, .three-col { grid-template-columns: 1fr !important; }
         .automation-grid { grid-template-columns: 1fr !important; }
-        .about-grid { grid-template-columns: 1fr !important; gap: 48px !important; }
+        .about-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
         .about-grid > div:first-child { justify-content: center !important; align-items: center !important; text-align: center; }
-        .about-grid > div:first-child img { max-width: 280px; width: 100%; }
+        .about-grid > div:first-child img { max-width: 260px; width: 100%; }
         .about-grid > div:first-child > div { margin: 0 auto; }
         .calendar-grid { grid-template-columns: 1fr !important; }
         .workflow-fifth { max-width: 100% !important; }
+
+        /* Footer */
         .footer-inner { flex-direction: column; text-align: center; align-items: center; gap: 12px; }
+
+        /* Hero stats: stack vertically */
         .stats-row { flex-direction: column; gap: 0; }
         .stat-divider { display: none !important; }
         .stats-row > div { padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid var(--border); width: 100%; }
@@ -3563,52 +3642,66 @@ export default function App() {
         .results-banner { flex-direction: column !important; gap: 12px !important; }
         .results-sep { display: none !important; }
 
-        /* Coverflow carousel */
+        /* Workflows coverflow */
         .coverflow-stage {
-          transform: scale(0.68) !important;
+          transform: scale(0.65) !important;
           transform-origin: center top !important;
-          margin-bottom: -148px !important;
+          margin-bottom: -161px !important;
         }
 
-        /* Case study inner two-column */
+        /* Case studies coverflow */
+        .cs-coverflow-stage {
+          transform: scale(0.58) !important;
+          transform-origin: center top !important;
+          margin-bottom: -244px !important;
+        }
+
+        /* Case study card inner layout */
         .case-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
-      }
 
-      @media (max-width: 540px) {
-        /* FAQ: 2-up then 1-up */
-        .faq-row { flex-wrap: wrap !important; justify-content: center !important; }
-        .faq-row > div { width: calc(50% - 8px) !important; }
-
-        /* Coverflow tighter */
-        .coverflow-stage {
-          transform: scale(0.5) !important;
-          transform-origin: center top !important;
-          margin-bottom: -228px !important;
-        }
-      }
-
-      @media (max-width: 380px) {
-        .faq-row > div { width: 100% !important; }
+        /* Process steps less padding */
+        .process-step-col { padding: 0 12px !important; }
       }
 
       @media (max-width: 640px) {
+        :root { --section-padding: 60px; }
+
+        /* Calendar form */
         .cal-step1-grid { grid-template-columns: 1fr !important; }
         .cal-step1-grid > div:first-child { border-right: none !important; border-bottom: 1px solid var(--border); }
         .cal-form-grid { grid-template-columns: 1fr !important; }
+
+        /* Testimonials */
         .testimonials-grid { grid-template-columns: 1fr !important; }
-      }
 
-      @media (max-width: 900px) and (min-width: 641px) {
-        .testimonials-grid { grid-template-columns: 1fr 1fr !important; }
-      }
-
-      @media (max-width: 1100px) {
-        .hero-side-diagram { display: none; }
+        /* Automation grid */
+        .automation-grid { grid-template-columns: 1fr !important; }
       }
 
       @media (max-width: 720px) {
-        .process-grid { grid-template-columns: 1fr !important; gap: 48px; }
+        .process-grid { grid-template-columns: 1fr !important; gap: 40px; }
         .process-line { display: none; }
+      }
+
+      @media (max-width: 540px) {
+        /* Coverflow tighter */
+        .coverflow-stage {
+          transform: scale(0.46) !important;
+          transform-origin: center top !important;
+          margin-bottom: -248px !important;
+        }
+        .cs-coverflow-stage {
+          transform: scale(0.42) !important;
+          transform-origin: center top !important;
+          margin-bottom: -337px !important;
+        }
+
+        /* FAQ 1-column */
+        .faq-row { flex-wrap: wrap !important; justify-content: center !important; }
+        .faq-row > div { width: 100% !important; }
+
+        /* Sticky CTA smaller on small screens */
+        .sticky-cta { bottom: 16px !important; right: 16px !important; font-size: 13px !important; padding: 10px 18px !important; }
       }
     `;
     document.head.appendChild(style);
