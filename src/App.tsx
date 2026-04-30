@@ -885,10 +885,10 @@ function Hero() {
       display: 'flex', alignItems: 'center', justifyContent: 'center',
       padding: '80px 24px', position: 'relative', overflow: 'hidden',
     }}>
-      <div className="hero-toast-column" style={{ position: 'absolute', left: 40, top: '50%', transform: 'translateY(-50%)' }}>
+      <div className="hero-side-diagram" style={{ position: 'absolute', left: 40, top: '50%', transform: 'translateY(-50%)' }}>
         <FloatingToasts list={LEFT_TOASTS} startDelay={0} />
       </div>
-      <div className="hero-toast-column" style={{ position: 'absolute', right: 40, top: '50%', transform: 'translateY(-50%)' }}>
+      <div className="hero-side-diagram" style={{ position: 'absolute', right: 40, top: '50%', transform: 'translateY(-50%)' }}>
         <FloatingToasts list={RIGHT_TOASTS} startDelay={1200} />
       </div>
       <div className="hero-content" style={{
