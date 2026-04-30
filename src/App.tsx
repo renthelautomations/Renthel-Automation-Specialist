@@ -1,19 +1,17 @@
-import React, { useEffect, useState, useRef, useMemo } from 'react';
+import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import profilePic from '../Assets/ren techy2 copy.png';
 import logoImg   from '../Assets/logo.png';
-import {
-  siN8n, siZapier, siMake, siAirtable, siNotion,
-  siAnthropic, siZoho, siMeta,
-  siJira, siAsana, siWhatsapp, siWordpress, siZoom,
-  siGithub, siXero, siSupabase, siGoogle, siElevenlabs, siCursor
-} from 'simple-icons';
+import linkedinAutomationImg from '../Automations/AI-Powered LinkedIn Content Engine.png';
+import gmailAutomationImg from '../Automations/AI Gmail Management System.png';
+import leadAutomationImg from '../Automations/AI Lead Management & Booking System.png';
+import metaAutomationImg from '../Automations/Meta Competitor Ad Intelligence System.png';
 import {
   Zap, FileText, Repeat, Database, BarChart2,
   ChevronRight, ChevronLeft, Search, Layers, CheckCircle,
   Mail, Linkedin, ArrowRight, ExternalLink,
   Sun, Moon,
-  CalendarDays, Clock, Timer, Gift, Check, Video
+  CalendarDays, Clock, Timer, Gift, Check, Video, Star
 } from 'lucide-react';
 
 // --- DATA DEFINITIONS ---
@@ -214,17 +212,23 @@ const TESTIMONIALS = [
   {
     quote: 'Renthel mapped our entire intake process in the first call and had automation running within a week. We went from three hours of admin daily to twenty minutes. I genuinely cannot imagine going back.',
     name: 'Bee T.',
-    role: 'Studio Director, Bee Fearless Studios'
+    role: 'Studio Director, Bee Fearless Studios',
+    stat: '3 hrs → 20 min',
+    statLabel: 'Daily admin time'
   },
   {
     quote: 'We were losing leads every week without knowing it. The speed-to-lead system paid for itself in the first two jobs we closed. ROI was immediate and obvious.',
     name: 'James T.',
-    role: 'Owner, Elevated Roofing & Restoration'
+    role: 'Owner, Elevated Roofing & Restoration',
+    stat: 'Job 1–2',
+    statLabel: 'Paid for itself'
   },
   {
     quote: 'I used to dread Monday mornings. Now the report is in my inbox before I open my laptop. The whole team relies on it.',
     name: 'Diana R.',
-    role: 'Operations Manager, Harborview Property Management'
+    role: 'Operations Manager, Harborview Property Management',
+    stat: '0 min',
+    statLabel: 'Manual reporting time'
   }
 ];
 
@@ -284,6 +288,103 @@ const CLIENT_LOGOS = [
   'Bee Fearless Studios', 'Elevated Roofing', 'Harborview Property', 
   'TechFlow Solutions', 'Nexus Creative', 'Peak Performance',
   'Global Logistics', 'Modern Real Estate', 'Vanguard Legal'
+];
+
+const AUTOMATION_SHOWCASES = [
+  {
+    image: linkedinAutomationImg,
+    name: 'AI-Powered LinkedIn Content Engine',
+    tagline: 'From zero content to daily posting — fully automated',
+    problem: 'Posting consistently on LinkedIn takes time most founders don\'t have. Researching trends. Writing posts. Designing visuals. Posting daily. It easily eats up 1–2 hours per day. Content becomes inconsistent. Growth slows. Leads drop.',
+    solution: 'I built a fully automated system that turns AI news into ready-to-publish LinkedIn content — every single day. No manual research. No writing from scratch. No design work. Just consistent, high-quality output.',
+    whatItDoes: [
+      'Pulls the latest AI and tech news from multiple sources',
+      'Filters and summarizes the most relevant stories',
+      'Writes a complete LinkedIn post (human tone, not robotic)',
+      'Generates a custom image for the post',
+      'Updates a content calendar automatically',
+      'Publishes directly to LinkedIn',
+      'Sends notifications once the post is live',
+    ],
+    tools: ['n8n', 'OpenAI', 'Google Sheets', 'Google Drive', 'LinkedIn API', 'Telegram'],
+    results: [
+      { value: '10–12 hrs', label: 'Saved per week' },
+      { value: 'Daily', label: 'Posts published' },
+      { value: '90%', label: 'Faster production' },
+      { value: '3x', label: 'Content consistency' },
+    ],
+  },
+  {
+    image: gmailAutomationImg,
+    name: 'AI Gmail Management System',
+    tagline: 'Automatically organize, prioritize, and protect your inbox',
+    problem: 'Email becomes overwhelming fast. Important messages get buried. Spam slips through. Urgent emails get missed. For busy founders and operators, inbox management becomes a daily bottleneck — 1–2 hours lost every day just sorting emails, with missed opportunities and increased risk of phishing.',
+    solution: 'An AI-powered system that reads, understands, and organizes your emails automatically. It doesn\'t just filter emails — it thinks through them and decides what matters.',
+    whatItDoes: [
+      'Monitors incoming emails in real-time via Gmail',
+      'Uses AI to analyze intent, category, urgency, and spam probability',
+      'Automatically classifies emails into: Business inquiries, Support requests, Personal messages, Spam or threats',
+      'Assigns labels inside Gmail automatically',
+      'Flags urgent emails instantly',
+      'Sends SMS alerts for high-priority messages',
+      'Logs all processed emails into a tracking system',
+    ],
+    tools: ['n8n', 'OpenAI', 'Gmail', 'Google Sheets', 'SMS API'],
+    results: [
+      { value: '80–90%', label: 'Less manual sorting' },
+      { value: 'Instant', label: 'Urgent detection' },
+      { value: '0', label: 'Missed priority emails' },
+      { value: '7–10 hrs', label: 'Saved per week' },
+    ],
+  },
+  {
+    image: leadAutomationImg,
+    name: 'AI Lead Management & Booking System',
+    tagline: 'Turn inquiries into booked clients — automatically',
+    problem: 'Leads come from everywhere — Instagram DMs, website chats, forms. Without a system, messages get missed or delayed. No clear priority between serious vs. casual inquiries. Manual replies slow down conversions. Hot leads go cold. Result: lost bookings and wasted opportunities.',
+    solution: 'A centralized system that captures, qualifies, scores, and responds to leads automatically — in real-time. No more guessing who\'s serious. No more delayed replies. No more messy inboxes.',
+    whatItDoes: [
+      'Captures leads from Instagram DMs, Wix website chat, and Tally form submissions',
+      'Normalizes all incoming data into one system',
+      'Uses AI to detect intent, urgency, and extract dates and key details',
+      'Checks real-time availability via Google Calendar',
+      'Suggests available booking slots and generates personalized responses',
+      'Sends branded email replies automatically',
+      'Scores every lead based on intent, urgency, budget, and message quality',
+      'Classifies leads as HOT, WARM, or COLD and sends instant WhatsApp alerts for hot leads',
+    ],
+    tools: ['n8n', 'OpenAI', 'Google Calendar', 'Google Sheets', 'Instagram', 'Wix', 'Tally', 'WhatsApp', 'Gmail'],
+    results: [
+      { value: 'Seconds', label: 'Response time' },
+      { value: '10+ hrs', label: 'Saved per week' },
+      { value: '80+', label: 'Hot lead score' },
+      { value: '100%', label: 'Leads qualified' },
+    ],
+  },
+  {
+    image: metaAutomationImg,
+    name: 'Meta Competitor Ad Intelligence System',
+    tagline: 'Track winning ads and uncover profitable products automatically',
+    problem: 'Running ads without knowing what works is expensive. Most businesses guess what creatives to use, manually check competitor ads (if at all), and miss trends until it\'s too late. Result: wasted ad spend, slow testing, and missed winning opportunities.',
+    solution: 'A system that automatically tracks competitor ads, detects winners, and delivers daily insights. No manual research. No guesswork. Just data-backed decisions.',
+    whatItDoes: [
+      'Scrapes ads daily from Meta Ads Library',
+      'Tracks multiple keywords, niches, and competitors',
+      'Extracts landing pages, creative types (video, image, text), start dates, and ad status',
+      'Detects new ads launched today and filters duplicate ads automatically',
+      'Identifies winning ads running 3+ days',
+      'Groups ads by product and landing page for deeper insights',
+      'Generates daily reports: new ads, active winners, top-performing products',
+      'Sends real-time alerts via Telegram',
+    ],
+    tools: ['n8n', 'Apify', 'Meta Ads Library', 'Google Sheets', 'Telegram'],
+    results: [
+      { value: '100+', label: 'Ads tracked daily' },
+      { value: '90%', label: 'Less research time' },
+      { value: 'Auto', label: 'Winner detection' },
+      { value: '3+ days', label: 'Winning threshold' },
+    ],
+  },
 ];
 
 const FAQ_DATA = [
@@ -479,22 +580,14 @@ function Navbar({ theme, toggleTheme }: { theme: string; toggleTheme: () => void
 
 function LogoMarquee() {
   return (
-    <div style={{ 
-      width: '100%', overflow: 'hidden', background: 'var(--surface)', 
+    <div style={{
+      width: '100%', overflow: 'hidden', background: 'var(--surface)',
       borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)',
       padding: '32px 0'
     }}>
       <div className="marquee-track" style={{ display: 'flex', gap: 64, alignItems: 'center' }}>
         {[...CLIENT_LOGOS, ...CLIENT_LOGOS].map((logo, i) => (
-          <span key={i} style={{ 
-            fontFamily: 'Space Grotesk', fontSize: 20, fontWeight: 700, 
-            background: 'linear-gradient(135deg, #f6f7f8 0%, #bdbfc1 50%, #f6f7f8 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            whiteSpace: 'nowrap',
-            letterSpacing: '-0.02em',
-            opacity: 0.8
-          }}>
+          <span key={i} className="marquee-logo">
             {logo}
           </span>
         ))}
@@ -503,52 +596,51 @@ function LogoMarquee() {
   );
 }
 
-const EXTRA_PATHS: Record<string, string> = {
-  'OpenAI': 'M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.18a5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .51 4.911 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.99 5.99 0 0 0 3.997-2.9 6.056 6.056 0 0 0-.747-7.073zM13.26 22.43a4.476 4.476 0 0 1-2.876-1.04l.141-.081 4.779-2.758a.795.795 0 0 0 .392-.681v-6.737l2.02 1.168a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.494 4.494zM3.6 18.304a4.47 4.47 0 0 1-.535-3.014l.142.085 4.783 2.759a.771.771 0 0 0 .78 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.14-1.646zM2.34 7.896a4.485 4.485 0 0 1 2.366-1.973V11.6a.766.766 0 0 0 .388.676l5.815 3.355-2.02 1.168a.076.076 0 0 1-.071 0L4.4 14.115a4.5 4.5 0 0 1-2.06-6.22zm16.597 3.855-5.815-3.354 2.02-1.168a.076.076 0 0 1 .071 0l4.418 2.549a4.5 4.5 0 0 1-.676 8.123v-5.676a.79.79 0 0 0-.018-.474zm2.01-3.023-.141-.085-4.774-2.782a.776.776 0 0 0-.785 0L9.409 9.23V6.897a.066.066 0 0 1 .028-.061l4.419-2.548a4.5 4.5 0 0 1 6.68 4.66zm-12.64 4.135-2.02-1.164a.08.08 0 0 1-.038-.057V6.075a4.5 4.5 0 0 1 7.375-3.453l-.142.08-4.778 2.758a.795.795 0 0 0-.393.681zm1.097-2.365 2.602-1.5 2.607 1.5v2.999l-2.597 1.5-2.607-1.5z',
-  'Slack':  'M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313zM8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312zM18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312zM15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z',
-  'Twilio': 'M11.993 0C5.366 0 0 5.366 0 12s5.366 12 12 12 12-5.366 12-12S18.627 0 11.993 0zM12 19.23c-3.987 0-7.23-3.243-7.23-7.23 0-3.987 3.243-7.23 7.23-7.23 3.987 0 7.23 3.243 7.23 7.23 0 3.987-3.243 7.23-7.23 7.23zm4.632-9.12a1.548 1.548 0 1 1-3.096 0 1.548 1.548 0 0 1 3.096 0zm-3.18 4.824a1.548 1.548 0 1 1-3.096 0 1.548 1.548 0 0 1 3.096 0zm-4.08-4.824a1.548 1.548 0 1 1 3.096 0 1.548 1.548 0 0 1-3.096 0zm3.18 4.824a1.548 1.548 0 1 1 3.096 0 1.548 1.548 0 0 1-3.096 0z',
-  'REST APIs': 'M7.5 4.5L1 12l6.5 7.5h2.25L3.25 12 9.75 4.5zm9 0L23 12l-6.5 7.5h-2.25L20.75 12 14.25 4.5zM13.5 3l-3 18h2l3-18z',
-  // GoHighLevel — lightning bolt (CRM/marketing platform)
-  'GoHighLevel': 'M13 2L3.5 14h7L7 22 20.5 10h-7.5z',
-  // Apollo.io — concentric circles (sales intelligence / targeting)
-  'Apollo.io': 'M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 2a8 8 0 1 1 0 16A8 8 0 0 1 12 4zm0 3a5 5 0 1 0 0 10A5 5 0 0 0 12 7zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6z',
-  // Vapi — microphone (voice AI platform)
-  'Vapi': 'M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm0 2a2 2 0 0 0-2 2v6a2 2 0 1 0 4 0V5a2 2 0 0 0-2-2zm-7 9h2a7 7 0 0 0 14 0h2a9 9 0 0 1-8 8.945V23h3v2H8v-2h3v-2.055A9 9 0 0 1 3 12h2z',
-  // Ahrefs — ascending bars (SEO analytics)
-  'Ahrefs': 'M4 16h3v4H4v-4zm4.5-5H12v9H8.5v-9zm4.5 2h3.5v7H13v-7zm4.5-7H21v14h-3.5V6zM4 10h3v4H4v-4zm-.5-6H7v4H3.5V4z',
+const LOGO_DOMAINS: Record<string, string> = {
+  'n8n':              'n8n.io',
+  'Zapier':           'zapier.com',
+  'Make.com':         'make.com',
+  'Airtable':         'airtable.com',
+  'Notion':           'notion.so',
+  'Jira':             'atlassian.com',
+  'Asana':            'asana.com',
+  'OpenAI':           'openai.com',
+  'Claude':           'claude.ai',
+  'Claude Code':      'claude.ai',
+  'Vapi':             'vapi.ai',
+  'ElevenLabs':       'elevenlabs.io',
+  'Zoho CRM':         'zoho.com',
+  'GoHighLevel':      'gohighlevel.com',
+  'Apollo.io':        'apollo.io',
+  'Slack':            'slack.com',
+  'WhatsApp':         'whatsapp.com',
+  'Twilio':           'twilio.com',
+  'Zoom':             'zoom.us',
+  'Google Workspace': 'workspace.google.com',
+  'Meta API':         'meta.com',
+  'GitHub':           'github.com',
+  'Cursor':           'cursor.com',
+  'Supabase':         'supabase.com',
+  'WordPress':        'wordpress.org',
+  'Ahrefs':           'ahrefs.com',
+  'Xero':             'xero.com',
+  'REST APIs':        'swagger.io',
 };
 
-const SI_MAP: Record<string, { path: string }> = {
-  'n8n':              siN8n,
-  'Zapier':           siZapier,
-  'Make.com':         siMake,
-  'Airtable':         siAirtable,
-  'Notion':           siNotion,
-  'Claude':           siAnthropic,
-  'Claude Code':      siAnthropic,
-  'Zoho CRM':         siZoho,
-  'Meta API':         siMeta,
-  'Jira':             siJira,
-  'Asana':            siAsana,
-  'WhatsApp':         siWhatsapp,
-  'WordPress':        siWordpress,
-  'Zoom':             siZoom,
-  'GitHub':           siGithub,
-  'Xero':             siXero,
-  'Supabase':         siSupabase,
-  'Google Workspace': siGoogle,
-  'ElevenLabs':       siElevenlabs,
-  'Cursor':           siCursor,
-};
+const LOGO_TOKEN = 'pk_OCHBJzrDRDO7R1LWkGPUMA';
 
-function TechIcon({ name, size = 24, isDark = true }: { name: string; size?: number; isDark?: boolean }) {
-  const path = SI_MAP[name]?.path ?? EXTRA_PATHS[name] ?? '';
-  if (!path) return null;
+function TechIcon({ name, size = 24 }: { name: string; size?: number; isDark?: boolean }) {
+  const domain = LOGO_DOMAINS[name];
+  if (!domain) return null;
   return (
-    <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden
-      fill={isDark ? 'url(#chrome-fill)' : 'url(#chrome-fill-light)'}>
-      <path d={path} />
-    </svg>
+    <img
+      src={`https://img.logo.dev/${domain}?token=${LOGO_TOKEN}`}
+      alt={name}
+      width={size}
+      height={size}
+      style={{ objectFit: 'contain', borderRadius: 4 }}
+      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+    />
   );
 }
 
@@ -574,7 +666,7 @@ function TechStack({ theme }: { theme: string }) {
           }}>The Tech Stack</span>
           <h2 style={{
             fontFamily: 'Space Grotesk, sans-serif', fontSize: 'clamp(32px, 4vw, 48px)',
-            lineHeight: 1.1, color: 'var(--text-primary)', fontWeight: 600,
+            lineHeight: 1.1, color: 'var(--success)', fontWeight: 600,
             letterSpacing: '-0.02em', marginBottom: 20
           }}>
             Tools I master to build your systems
@@ -586,27 +678,7 @@ function TechStack({ theme }: { theme: string }) {
         </div>
       </div>
 
-      {/* Shared gradient defs — chrome for dark, dark-slate for light */}
-      <svg aria-hidden width="0" height="0" style={{ position: 'absolute', pointerEvents: 'none' }}>
-        <defs>
-          <linearGradient id="chrome-fill" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
-            <stop offset="0%"   stopColor="#e8e8e8" />
-            <stop offset="25%"  stopColor="#b4b4b4" />
-            <stop offset="50%"  stopColor="#f5f5f5" />
-            <stop offset="75%"  stopColor="#9a9a9a" />
-            <stop offset="100%" stopColor="#d0d0d0" />
-          </linearGradient>
-          <linearGradient id="chrome-fill-light" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
-            <stop offset="0%"   stopColor="#2a2a2a" />
-            <stop offset="25%"  stopColor="#404040" />
-            <stop offset="50%"  stopColor="#1a1a1a" />
-            <stop offset="75%"  stopColor="#3a3a3a" />
-            <stop offset="100%" stopColor="#2a2a2a" />
-          </linearGradient>
-        </defs>
-      </svg>
-
-      {/* 3 rows with fade masks */}
+      {/* rows with fade masks */}
       <div style={{
         overflow: 'hidden',
         WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)',
@@ -650,13 +722,113 @@ function TechStack({ theme }: { theme: string }) {
     </section>
   );
 }
+const HERO_PHRASES = [
+  'leaking time.',
+  'losing leads.',
+  'wasting hours.',
+  'running on manual.',
+];
+
+const LEFT_TOASTS = [
+  { text: 'Lead captured',   tool: 'Apollo.io'     },
+  { text: 'CRM updated',     tool: 'Zoho CRM'      },
+  { text: 'Invoice sent',    tool: 'Xero'          },
+  { text: 'Slack notified',  tool: 'Slack'         },
+  { text: 'Report ready',    tool: 'Google Sheets' },
+];
+
+const RIGHT_TOASTS = [
+  { text: 'Email drafted',      tool: 'Gmail'    },
+  { text: 'Post published',     tool: 'LinkedIn' },
+  { text: 'Meeting booked',     tool: 'Cal.com'  },
+  { text: 'Data synced',        tool: 'Airtable' },
+  { text: 'Follow-up queued',   tool: 'Make.com' },
+];
+
+type ToastItem = { id: number; text: string; tool: string };
+
+function FloatingToasts({ list, startDelay = 0 }: { list: typeof LEFT_TOASTS; startDelay?: number }) {
+  const [toasts, setToasts] = useState<ToastItem[]>([]);
+  const idxRef = useRef(0);
+  const counterRef = useRef(0);
+
+  useEffect(() => {
+    let interval: ReturnType<typeof setInterval>;
+    const timeout = setTimeout(() => {
+      const spawn = () => {
+        const item = list[idxRef.current % list.length];
+        idxRef.current++;
+        const id = counterRef.current++;
+        setToasts(t => [...t.slice(-2), { id, text: item.text, tool: item.tool }]);
+      };
+      spawn();
+      interval = setInterval(spawn, 2400);
+    }, startDelay);
+    return () => { clearTimeout(timeout); clearInterval(interval); };
+  }, []);
+
+  return (
+    <div style={{
+      display: 'flex', flexDirection: 'column-reverse', gap: 10,
+      pointerEvents: 'none', width: 190,
+    }}>
+      <AnimatePresence>
+        {toasts.map(t => (
+          <motion.div
+            key={t.id}
+            layout
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -16, transition: { duration: 0.3 } }}
+            transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+            style={{
+              background: 'var(--surface)',
+              border: '1px solid var(--border)',
+              borderRadius: 12,
+              padding: '10px 14px',
+              display: 'flex', alignItems: 'center', gap: 10,
+              boxShadow: '0 2px 12px rgba(0,0,0,0.12)',
+            }}
+          >
+            <div style={{
+              width: 22, height: 22, borderRadius: '50%',
+              background: 'rgba(62,198,138,0.15)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              flexShrink: 0,
+            }}>
+              <Check size={11} color="var(--success)" strokeWidth={3} />
+            </div>
+            <div>
+              <div style={{ fontFamily: 'Inter', fontSize: 12, fontWeight: 600, color: 'var(--text-primary)', whiteSpace: 'nowrap' }}>{t.text}</div>
+              <div style={{ fontFamily: 'Inter', fontSize: 10, color: 'var(--text-tertiary)', marginTop: 2 }}>{t.tool}</div>
+            </div>
+          </motion.div>
+        ))}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 function Hero() {
+  const [phraseIdx, setPhraseIdx] = useState(0);
+
+  useEffect(() => {
+    const t = setInterval(() => setPhraseIdx(i => (i + 1) % HERO_PHRASES.length), 2800);
+    return () => clearInterval(t);
+  }, []);
+
   return (
     <section style={{
       minHeight: 'calc(100vh - var(--nav-height))',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
-      padding: '80px 24px'
+      padding: '80px 24px', position: 'relative', overflow: 'hidden',
     }}>
+      <div className="hero-toast-column" style={{ position: 'absolute', left: 40, top: '50%', transform: 'translateY(-50%)' }}>
+        <FloatingToasts list={LEFT_TOASTS} startDelay={0} />
+      </div>
+      <div className="hero-toast-column" style={{ position: 'absolute', right: 40, top: '50%', transform: 'translateY(-50%)' }}>
+        <FloatingToasts list={RIGHT_TOASTS} startDelay={1200} />
+      </div>
       <div className="hero-content" style={{
         textAlign: 'center', maxWidth: 680, margin: '0 auto', width: '100%'
       }}>
@@ -681,7 +853,20 @@ function Hero() {
           marginTop: 28
         }}>
           Your business is<br />
-          <span className="accent-gradient">leaking time.</span>
+          <span style={{ display: 'inline-block', position: 'relative', overflow: 'hidden', verticalAlign: 'bottom' }}>
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={phraseIdx}
+                style={{ display: 'inline-block', color: 'var(--success)' }}
+                initial={{ opacity: 0, y: '60%' }}
+                animate={{ opacity: 1, y: '0%' }}
+                exit={{ opacity: 0, y: '-60%' }}
+                transition={{ duration: 0.38, ease: [0.4, 0, 0.2, 1] }}
+              >
+                {HERO_PHRASES[phraseIdx]}
+              </motion.span>
+            </AnimatePresence>
+          </span>
         </h1>
 
         <p style={{
@@ -828,7 +1013,7 @@ function About() {
                 letterSpacing: '-0.03em', marginBottom: 6
               }}>
                 Hi, I'm Renthel —<br />
-                <span className="accent-gradient">AI Automation Specialist</span>
+                <span style={{ color: 'var(--success)' }}>AI Automation Specialist</span>
               </h2>
 
               {/* Subtitle roles */}
@@ -1488,7 +1673,7 @@ function CaseStudies({ theme }: { theme: string }) {
           }}>Case Studies</span>
           <h2 style={{
             fontFamily: 'Space Grotesk, sans-serif', fontSize: 'clamp(32px, 4vw, 48px)',
-            lineHeight: 1.1, color: 'var(--text-primary)', fontWeight: 600,
+            lineHeight: 1.1, color: 'var(--success)', fontWeight: 600,
             letterSpacing: '-0.02em', marginBottom: 32
           }}>Real problems. Automated solutions.</h2>
           <div style={{ display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap' }}>
@@ -1712,6 +1897,360 @@ function CaseStudies({ theme }: { theme: string }) {
   );
 }
 
+function ZoomableImage({ src, alt, zoom, theme, results }: {
+  src: string; alt: string; zoom: number; theme: string;
+  results: { value: string; label: string }[];
+}) {
+  const numericResults = results.filter(r => /\d/.test(r.value));
+  return (
+    <div style={{
+      padding: 24, borderRight: '1px solid var(--border)',
+      background: theme === 'dark' ? '#07080b' : '#f0f1f4',
+      display: 'flex', flexDirection: 'column', gap: 16,
+      overflow: 'hidden',
+    }}>
+      {/* Image — grows to fill available space, centered */}
+      <div
+        className="zoom-container"
+        style={{
+          flexGrow: 1, overflow: 'auto', borderRadius: 10,
+          border: '1px solid var(--border)',
+          background: '#000',
+          minHeight: 0,
+          cursor: zoom > 1 ? 'grab' : 'default',
+          display: 'flex', alignItems: zoom <= 1 ? 'center' : 'flex-start',
+          justifyContent: zoom <= 1 ? 'center' : 'flex-start',
+        }}
+      >
+        <img
+          src={src}
+          alt={alt}
+          style={{
+            display: 'block',
+            width: zoom <= 1 ? 'auto' : `${Math.round(zoom * 100)}%`,
+            maxWidth: zoom <= 1 ? '100%' : 'none',
+            minWidth: zoom > 1 ? '100%' : 'unset',
+            flexShrink: 0,
+          }}
+        />
+      </div>
+
+      {/* Zoom hint */}
+      <p style={{
+        fontFamily: 'Inter', fontSize: 11, color: 'var(--text-tertiary)',
+        textAlign: 'center', margin: 0, flexShrink: 0,
+      }}>
+        Scroll to zoom · {Math.round(zoom * 100)}%
+      </p>
+
+      {/* Stats below image */}
+      {numericResults.length > 0 && (
+        <div style={{
+          background: 'rgba(62,198,138,0.05)', border: '1px solid rgba(62,198,138,0.18)',
+          borderRadius: 12, padding: '16px 20px', flexShrink: 0,
+        }}>
+          <span style={{
+            display: 'block', fontFamily: 'Inter', fontSize: 10, fontWeight: 700,
+            letterSpacing: '0.12em', textTransform: 'uppercase',
+            color: 'var(--success)', marginBottom: 14, opacity: 0.9,
+          }}>Real Results</span>
+          <div style={{ display: 'flex', gap: 0, flexWrap: 'nowrap', overflow: 'hidden' }}>
+            {numericResults.map((r, idx) => (
+              <div key={idx} style={{ flex: '1 1 0', minWidth: 0, paddingRight: 10 }}>
+                <div style={{
+                  fontFamily: 'Space Grotesk', fontWeight: 700,
+                  fontSize: 'clamp(18px, 1.8vw, 26px)',
+                  lineHeight: 1, color: 'var(--success)', letterSpacing: '-0.02em',
+                  whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+                }}>{r.value}</div>
+                <div style={{
+                  fontFamily: 'Inter', fontSize: 10, color: 'var(--text-tertiary)',
+                  marginTop: 4, lineHeight: 1.3,
+                }}>{r.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function AutomationShowcase({ theme }: { theme: string }) {
+  const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
+  const [zoom, setZoom] = useState(1);
+  const total = AUTOMATION_SHOWCASES.length;
+
+  const selected = selectedIdx !== null ? AUTOMATION_SHOWCASES[selectedIdx] : null;
+  const goPrev = () => { setSelectedIdx(i => i !== null ? (i - 1 + total) % total : null); setZoom(1); };
+  const goNext = () => { setSelectedIdx(i => i !== null ? (i + 1) % total : null); setZoom(1); };
+
+  // Wheel zoom — attached on document so there are zero DOM-timing issues.
+  // Only fires when the cursor is inside .zoom-container.
+  useEffect(() => {
+    if (selectedIdx === null) return;
+    const handler = (e: WheelEvent) => {
+      if (!(e.target as Element).closest('.zoom-container')) return;
+      e.preventDefault();
+      const delta = e.deltaY * (e.ctrlKey ? 0.018 : 0.005);
+      setZoom(z => Math.min(4, Math.max(0.5, z - delta)));
+    };
+    document.addEventListener('wheel', handler, { passive: false });
+    return () => document.removeEventListener('wheel', handler);
+  }, [selectedIdx]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    if (selectedIdx === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight') goNext();
+      if (e.key === 'ArrowLeft')  goPrev();
+      if (e.key === 'Escape')     setSelectedIdx(null);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [selectedIdx]);
+
+  const navBtn = (onClick: () => void, icon: React.ReactNode) => (
+    <button
+      onClick={e => { e.stopPropagation(); onClick(); }}
+      style={{
+        width: 48, height: 48, borderRadius: '50%', flexShrink: 0,
+        background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)',
+        color: '#fff', cursor: 'pointer',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        transition: 'background 0.15s, border-color 0.15s',
+      }}
+      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--accent)'; (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)'; }}
+      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.07)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.12)'; }}
+    >{icon}</button>
+  );
+
+  return (
+    <section style={{ padding: '0 0 var(--section-padding)', background: 'var(--bg)' }}>
+      <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto', padding: '0 24px' }}>
+
+        <span style={{
+          fontFamily: 'Inter', fontSize: 11, fontWeight: 600,
+          letterSpacing: '0.08em', textTransform: 'uppercase',
+          color: 'var(--accent)', display: 'block', marginBottom: 20,
+          textAlign: 'center',
+        }}>More Automations</span>
+
+        <div style={{
+          display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20,
+        }} className="automation-grid">
+          {AUTOMATION_SHOWCASES.map((automation, i) => (
+            <div key={i} style={{
+              background: 'var(--surface)', border: '1px solid var(--border)',
+              borderRadius: 16, overflow: 'hidden',
+              display: 'flex', flexDirection: 'column',
+              transition: 'border-color 0.2s, box-shadow 0.2s',
+            }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(62,198,138,0.35)';
+              (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 32px rgba(0,0,0,0.25)';
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)';
+              (e.currentTarget as HTMLElement).style.boxShadow = 'none';
+            }}
+            >
+              <div style={{ width: '100%', height: 180, overflow: 'hidden', flexShrink: 0 }}>
+                <img src={automation.image} alt={automation.name}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transition: 'transform 0.4s ease' }}
+                  onMouseEnter={e => (e.currentTarget as HTMLImageElement).style.transform = 'scale(1.04)'}
+                  onMouseLeave={e => (e.currentTarget as HTMLImageElement).style.transform = 'scale(1)'}
+                />
+              </div>
+
+              <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: 10, flexGrow: 1 }}>
+                <h3 style={{
+                  fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 15,
+                  color: 'var(--text-primary)', lineHeight: 1.35, margin: 0,
+                }}>{automation.name}</h3>
+                <p style={{
+                  fontFamily: 'Inter', fontSize: 13, color: 'var(--text-secondary)',
+                  lineHeight: 1.6, margin: 0,
+                  display: '-webkit-box', WebkitLineClamp: 2,
+                  WebkitBoxOrient: 'vertical', overflow: 'hidden',
+                }}>{automation.tagline}</p>
+
+                <div style={{ marginTop: 'auto', paddingTop: 12 }}>
+                  <button
+                    onClick={() => { setSelectedIdx(i); setZoom(1); }}
+                    style={{
+                      width: '100%', padding: '10px 16px',
+                      background: 'var(--accent-glow)', border: '1px solid var(--accent)',
+                      color: 'var(--accent)', borderRadius: 8,
+                      fontFamily: 'Inter', fontWeight: 600, fontSize: 13,
+                      cursor: 'pointer', transition: 'background 0.2s, color 0.2s',
+                    }}
+                    onMouseEnter={e => {
+                      (e.currentTarget as HTMLElement).style.background = 'var(--accent)';
+                      (e.currentTarget as HTMLElement).style.color = theme === 'dark' ? '#000' : '#fff';
+                    }}
+                    onMouseLeave={e => {
+                      (e.currentTarget as HTMLElement).style.background = 'var(--accent-glow)';
+                      (e.currentTarget as HTMLElement).style.color = 'var(--accent)';
+                    }}
+                  >
+                    View Full Automation →
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <AnimatePresence>
+        {selected && selectedIdx !== null && (
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            onClick={() => setSelectedIdx(null)}
+            style={{
+              position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+              background: 'rgba(0,0,0,0.88)', zIndex: 1000,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              gap: 16, padding: '24px 16px', backdropFilter: 'blur(10px)',
+            }}
+          >
+            {/* Prev button */}
+            {navBtn(goPrev, <ChevronLeft size={22} />)}
+
+            <motion.div
+              key={selectedIdx}
+              initial={{ scale: 0.93, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.93, opacity: 0 }} transition={{ duration: 0.22 }}
+              onClick={e => e.stopPropagation()}
+              style={{
+                background: 'var(--surface)', border: '1px solid var(--border)',
+                borderRadius: 24, maxWidth: 1060, width: '100%',
+                maxHeight: '90vh', overflow: 'hidden',
+                display: 'flex', flexDirection: 'column', flexShrink: 1,
+              }}
+            >
+              {/* Modal header */}
+              <div style={{
+                padding: '16px 24px', borderBottom: '1px solid var(--border)',
+                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                flexShrink: 0,
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <span style={{
+                    fontFamily: 'Inter', fontSize: 11, fontWeight: 600,
+                    letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--accent)',
+                  }}>Automation Details</span>
+                  <span style={{
+                    fontFamily: 'Inter', fontSize: 11, color: 'var(--text-tertiary)',
+                  }}>{selectedIdx + 1} / {total}</span>
+                </div>
+                <button
+                  onClick={() => setSelectedIdx(null)}
+                  style={{
+                    background: 'var(--surface)', border: '1px solid var(--border)',
+                    borderRadius: 8, padding: '6px 16px',
+                    fontFamily: 'Inter', fontSize: 13, color: 'var(--text-secondary)',
+                    cursor: 'pointer', transition: 'border-color 0.15s, color 0.15s',
+                  }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)'; (e.currentTarget as HTMLElement).style.color = 'var(--accent)'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'; (e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)'; }}
+                >Close ✕</button>
+              </div>
+
+              {/* Modal body: two columns */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', overflow: 'hidden', flexGrow: 1, minHeight: 0 }}>
+
+                {/* Left: zoomable image */}
+                <ZoomableImage
+                  src={selected.image}
+                  alt={selected.name}
+                  zoom={zoom}
+                  theme={theme}
+                  results={selected.results}
+                />
+
+                {/* Right: details */}
+                <div style={{ padding: '28px 24px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 24 }}>
+
+                  {/* Name + tagline + tools */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                    <h2 style={{
+                      fontFamily: 'Space Grotesk', fontSize: 'clamp(17px, 1.8vw, 24px)',
+                      fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.2, margin: 0,
+                    }}>{selected.name}</h2>
+                    <p style={{ fontFamily: 'Inter', fontSize: 13, color: 'var(--accent)', margin: 0, fontStyle: 'italic' }}>
+                      {selected.tagline}
+                    </p>
+                    {/* Tools under name */}
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginTop: 2 }}>
+                      {selected.tools.map((tool, idx) => (
+                        <span key={idx} style={{
+                          background: 'var(--bg)', border: '1px solid var(--border)',
+                          padding: '4px 10px', borderRadius: 100,
+                          fontFamily: 'Inter', fontSize: 11, fontWeight: 500, color: 'var(--text-tertiary)',
+                        }}>{tool}</span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* The Problem */}
+                  <div>
+                    <span style={{
+                      display: 'block', fontFamily: 'Inter', fontSize: 10, fontWeight: 700,
+                      letterSpacing: '0.12em', textTransform: 'uppercase',
+                      color: 'var(--text-tertiary)', marginBottom: 8,
+                    }}>The Problem</span>
+                    <p style={{ fontFamily: 'Inter', fontSize: 13.5, color: 'var(--text-secondary)', lineHeight: 1.75, margin: 0 }}>
+                      {selected.problem}
+                    </p>
+                  </div>
+
+                  {/* The Solution */}
+                  <div style={{
+                    background: 'var(--accent-glow)', border: '1px solid rgba(62,198,138,0.18)',
+                    borderRadius: 12, padding: '16px 18px',
+                  }}>
+                    <span style={{
+                      display: 'block', fontFamily: 'Inter', fontSize: 10, fontWeight: 700,
+                      letterSpacing: '0.12em', textTransform: 'uppercase',
+                      color: 'var(--accent)', marginBottom: 8,
+                    }}>The Solution</span>
+                    <p style={{ fontFamily: 'Inter', fontSize: 13.5, color: 'var(--text-secondary)', lineHeight: 1.75, margin: 0 }}>
+                      {selected.solution}
+                    </p>
+                  </div>
+
+                  {/* What This System Does */}
+                  <div>
+                    <span style={{
+                      display: 'block', fontFamily: 'Inter', fontSize: 10, fontWeight: 700,
+                      letterSpacing: '0.12em', textTransform: 'uppercase',
+                      color: 'var(--text-tertiary)', marginBottom: 10,
+                    }}>What This System Does</span>
+                    <ul style={{ margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 8 }}>
+                      {selected.whatItDoes.map((item, idx) => (
+                        <li key={idx} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+                          <ArrowRight size={13} color="var(--accent)" style={{ marginTop: 3, flexShrink: 0 }} />
+                          <span style={{ fontFamily: 'Inter', fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.55 }}>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Next button */}
+            {navBtn(goNext, <ChevronRight size={22} />)}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </section>
+  );
+}
+
 function Process() {
   const getIcon = (name: string) => {
     switch(name) {
@@ -1733,7 +2272,7 @@ function Process() {
           }}>Process</span>
           <h2 style={{
             fontFamily: 'Space Grotesk, sans-serif', fontSize: 'clamp(32px, 4vw, 48px)',
-            lineHeight: 1.1, color: 'var(--text-primary)', fontWeight: 600,
+            lineHeight: 1.1, color: 'var(--success)', fontWeight: 600,
             letterSpacing: '-0.02em'
           }}>
             Simple. No surprises.
@@ -1771,18 +2310,9 @@ function Process() {
 }
 
 function Testimonials() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentIndex(prev => (prev + 1) % TESTIMONIALS.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, []);
-
   return (
     <section id="testimonials" style={{ padding: 'var(--section-padding) 0', background: 'var(--bg)' }}>
-      <div style={{ maxWidth: 800, margin: '0 auto', padding: '0 24px' }}>
+      <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto', padding: '0 24px' }}>
         <div style={{ textAlign: 'center', marginBottom: 64 }}>
           <span style={{
             fontFamily: 'Inter', fontSize: 11, fontWeight: 600,
@@ -1791,53 +2321,57 @@ function Testimonials() {
           }}>Testimonials</span>
           <h2 style={{
             fontFamily: 'Space Grotesk, sans-serif', fontSize: 'clamp(32px, 4vw, 48px)',
-            lineHeight: 1.1, color: 'var(--text-primary)', fontWeight: 600,
+            lineHeight: 1.1, color: 'var(--success)', fontWeight: 600,
             letterSpacing: '-0.02em'
           }}>
             What clients say.
           </h2>
         </div>
 
-        <div style={{ position: 'relative', minHeight: 300 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }} className="testimonials-grid">
           {TESTIMONIALS.map((t, i) => (
-            <div 
-              key={i} 
-              style={{
-                position: 'absolute', top: 0, left: 0, width: '100%',
-                opacity: currentIndex === i ? 1 : 0,
-                visibility: currentIndex === i ? 'visible' : 'hidden',
-                transform: `translateX(${(i - currentIndex) * 20}px)`,
-                transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
-                background: 'var(--surface)', border: '1px solid var(--border)',
-                borderRadius: 'var(--radius-card)', padding: 'var(--card-padding)',
-                textAlign: 'center'
-              }}
-            >
-              <div style={{ color: 'var(--accent)', marginBottom: 24, display: 'flex', justifyContent: 'center' }}>
-                {[...Array(5)].map((_, idx) => <Zap key={idx} size={16} fill="currentColor" style={{ margin: '0 2px' }} />)}
+            <div key={i} style={{
+              background: 'var(--surface)', border: '1px solid var(--border)',
+              borderRadius: 'var(--radius-card)', padding: 32,
+              display: 'flex', flexDirection: 'column', gap: 24,
+            }}>
+              {/* Result stat */}
+              <div style={{
+                background: 'rgba(62,198,138,0.06)', border: '1px solid rgba(62,198,138,0.18)',
+                borderRadius: 10, padding: '14px 18px',
+              }}>
+                <div style={{
+                  fontFamily: 'Space Grotesk', fontWeight: 700,
+                  fontSize: 'clamp(20px, 2vw, 28px)', lineHeight: 1,
+                  color: 'var(--success)', letterSpacing: '-0.02em'
+                }}>{t.stat}</div>
+                <div style={{
+                  fontFamily: 'Inter', fontSize: 11, color: 'var(--text-tertiary)',
+                  marginTop: 5, textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 600
+                }}>{t.statLabel}</div>
               </div>
-              <p style={{ fontFamily: 'Inter', fontSize: 20, color: 'var(--text-primary)', lineHeight: 1.6, fontStyle: 'italic', marginBottom: 32 }}>
+
+              {/* Stars */}
+              <div style={{ display: 'flex', gap: 3 }}>
+                {[...Array(5)].map((_, idx) => (
+                  <Star key={idx} size={14} fill="var(--accent)" color="var(--accent)" />
+                ))}
+              </div>
+
+              {/* Quote */}
+              <p style={{
+                fontFamily: 'Inter', fontSize: 15, color: 'var(--text-secondary)',
+                lineHeight: 1.7, fontStyle: 'italic', margin: 0, flexGrow: 1
+              }}>
                 "{t.quote}"
               </p>
+
+              {/* Attribution */}
               <div>
-                <div style={{ fontFamily: 'Inter', fontWeight: 600, color: 'var(--text-primary)', fontSize: 16 }}>{t.name}</div>
-                <div style={{ fontFamily: 'Inter', color: 'var(--text-tertiary)', fontSize: 13, marginTop: 4 }}>{t.role}</div>
+                <div style={{ fontFamily: 'Inter', fontWeight: 600, color: 'var(--text-primary)', fontSize: 15 }}>{t.name}</div>
+                <div style={{ fontFamily: 'Inter', color: 'var(--text-tertiary)', fontSize: 12, marginTop: 3 }}>{t.role}</div>
               </div>
             </div>
-          ))}
-        </div>
-
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 32 }}>
-          {TESTIMONIALS.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrentIndex(i)}
-              style={{
-                width: 8, height: 8, borderRadius: '50%',
-                background: currentIndex === i ? 'var(--accent)' : 'var(--border)',
-                border: 'none', cursor: 'pointer', transition: 'background 0.3s ease'
-              }}
-            />
           ))}
         </div>
       </div>
@@ -2088,12 +2622,12 @@ function GoogleCalendar() {
           }}>Book a Call</span>
           <h2 style={{
             fontFamily: 'Space Grotesk, sans-serif', fontSize: 'clamp(32px, 4vw, 48px)',
-            lineHeight: 1.1, color: 'var(--text-primary)', fontWeight: 600,
+            lineHeight: 1.1, color: 'var(--success)', fontWeight: 600,
             letterSpacing: '-0.02em', marginBottom: 16,
           }}>Let's find your time.</h2>
           <p style={{
             fontFamily: 'Inter', fontSize: 16, color: 'var(--text-secondary)',
-            maxWidth: 480, margin: '0 auto', lineHeight: 1.7,
+            margin: '0 auto', lineHeight: 1.7, whiteSpace: 'nowrap',
           }}>Pick a slot and confirm — you'll get a calendar invite immediately.</p>
         </div>
 
@@ -2442,12 +2976,19 @@ function ROICalculator() {
   const [hourlyRate, setHourlyRate] = useState(30);
 
   const dailySavings = (tasks * timePerTask) / 60;
-  const annualTimeSavings = dailySavings * 260; // 260 working days
+  const annualTimeSavings = dailySavings * 260;
   const annualCostSavings = annualTimeSavings * hourlyRate;
+
+  const sliders = [
+    { label: 'Manual tasks per day',    value: tasks,        display: `${tasks}`,         min: 1,  max: 50,  step: 1,  set: setTasks },
+    { label: 'Minutes per task',        value: timePerTask,  display: `${timePerTask}m`,  min: 1,  max: 120, step: 1,  set: setTimePerTask },
+    { label: 'Employee hourly rate',    value: hourlyRate,   display: `$${hourlyRate}`,   min: 1,  max: 200, step: 1,  set: setHourlyRate },
+  ];
 
   return (
     <section id="roi" style={{ padding: 'var(--section-padding) 0', background: 'var(--bg)' }}>
       <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto', padding: '0 24px' }}>
+
         <div style={{ textAlign: 'center', marginBottom: 64 }}>
           <span style={{
             fontFamily: 'Inter', fontSize: 11, fontWeight: 600,
@@ -2456,7 +2997,7 @@ function ROICalculator() {
           }}>ROI Calculator</span>
           <h2 style={{
             fontFamily: 'Space Grotesk, sans-serif', fontSize: 'clamp(32px, 4vw, 48px)',
-            lineHeight: 1.1, color: 'var(--text-primary)', fontWeight: 600,
+            lineHeight: 1.1, color: 'var(--success)', fontWeight: 600,
             letterSpacing: '-0.02em'
           }}>
             Quantify your time leak.
@@ -2464,89 +3005,78 @@ function ROICalculator() {
         </div>
 
         <div style={{
-          display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64,
-          alignItems: 'center'
+          display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, alignItems: 'stretch'
         }} className="two-col">
+
+          {/* Sliders */}
           <div className="fade-init" style={{
             background: 'var(--surface)', border: '1px solid var(--border)',
             borderRadius: 'var(--radius-card)', padding: 'var(--card-padding)',
             display: 'flex', flexDirection: 'column', gap: 32
           }}>
-            <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
-                <label style={{ fontFamily: 'Inter', fontSize: 14, color: 'var(--text-primary)', fontWeight: 500 }}>
-                  Manual tasks per day
-                </label>
-                <span style={{ fontFamily: 'Inter', fontSize: 14, color: 'var(--accent)', fontWeight: 600 }}>{tasks}</span>
+            {sliders.map(s => (
+              <div key={s.label}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
+                  <label style={{ fontFamily: 'Inter', fontSize: 14, color: 'var(--text-secondary)', fontWeight: 400 }}>
+                    {s.label}
+                  </label>
+                  <span style={{ fontFamily: 'Space Grotesk', fontSize: 14, color: 'var(--accent)', fontWeight: 600 }}>
+                    {s.display}
+                  </span>
+                </div>
+                <input
+                  type="range" min={s.min} max={s.max} step={s.step} value={s.value}
+                  onChange={e => s.set(parseInt(e.target.value))}
+                  style={{ width: '100%', accentColor: 'var(--accent)', cursor: 'pointer' }}
+                />
               </div>
-              <input 
-                type="range" min="1" max="50" value={tasks} 
-                onChange={(e) => setTasks(parseInt(e.target.value))}
-                style={{ width: '100%', accentColor: 'var(--accent)' }}
-              />
-            </div>
-
-            <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
-                <label style={{ fontFamily: 'Inter', fontSize: 14, color: 'var(--text-primary)', fontWeight: 500 }}>
-                  Minutes per task
-                </label>
-                <span style={{ fontFamily: 'Inter', fontSize: 14, color: 'var(--accent)', fontWeight: 600 }}>{timePerTask}m</span>
-              </div>
-              <input 
-                type="range" min="5" max="120" step="5" value={timePerTask} 
-                onChange={(e) => setTimePerTask(parseInt(e.target.value))}
-                style={{ width: '100%', accentColor: 'var(--accent)' }}
-              />
-            </div>
-
-            <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
-                <label style={{ fontFamily: 'Inter', fontSize: 14, color: 'var(--text-primary)', fontWeight: 500 }}>
-                  Employee hourly rate ($)
-                </label>
-                <span style={{ fontFamily: 'Inter', fontSize: 14, color: 'var(--accent)', fontWeight: 600 }}>${hourlyRate}</span>
-              </div>
-              <input 
-                type="range" min="15" max="200" step="5" value={hourlyRate} 
-                onChange={(e) => setHourlyRate(parseInt(e.target.value))}
-                style={{ width: '100%', accentColor: 'var(--accent)' }}
-              />
-            </div>
+            ))}
           </div>
 
-          <div className="fade-init" style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-            <div style={{
-              background: 'var(--surface)', border: '1px solid var(--border)',
-              borderRadius: 'var(--radius-card)', padding: 'var(--card-padding)',
-              textAlign: 'center'
-            }}>
-              <div style={{ fontFamily: 'Inter', fontSize: 12, color: 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>
-                Annual Time Recovered
-              </div>
-              <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: 48, fontWeight: 600, color: 'var(--success)' }}>
-                {Math.round(annualTimeSavings)} hrs
-              </div>
-              <div style={{ fontFamily: 'Inter', fontSize: 14, color: 'var(--text-secondary)', marginTop: 8 }}>
-                That's {Math.round(annualTimeSavings / 8)} full work days back.
+          {/* Results */}
+          <div className="fade-init" style={{
+            background: 'var(--surface)', border: '1px solid var(--border)',
+            borderRadius: 'var(--radius-card)', padding: 'var(--card-padding)',
+            display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: 32
+          }}>
+            <div>
+              <span style={{
+                fontFamily: 'Inter', fontSize: 9, fontWeight: 700,
+                letterSpacing: '0.1em', textTransform: 'uppercase',
+                color: 'var(--success)', display: 'block', marginBottom: 24, opacity: 0.85
+              }}>Results</span>
+
+              <div style={{ display: 'flex', gap: 0 }}>
+                {[
+                  { value: `${Math.round(annualTimeSavings)} hrs`, label: 'Recovered annually' },
+                  { value: `${Math.round(annualTimeSavings / 8)}d`, label: 'Full work days back' },
+                  { value: `$${annualCostSavings.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}`, label: 'Potential annual savings' },
+                ].map((stat, i, arr) => (
+                  <div key={i} style={{ flex: 1, paddingRight: i < arr.length - 1 ? 20 : 0, borderRight: i < arr.length - 1 ? '1px solid var(--border)' : 'none', paddingLeft: i > 0 ? 20 : 0 }}>
+                    <div style={{
+                      fontFamily: 'Space Grotesk', fontWeight: 700,
+                      fontSize: 'clamp(22px, 2.5vw, 34px)', lineHeight: 1,
+                      color: 'var(--success)', letterSpacing: '-0.02em'
+                    }}>{stat.value}</div>
+                    <div style={{
+                      fontFamily: 'Inter', fontSize: 11, color: 'var(--text-tertiary)',
+                      marginTop: 6, lineHeight: 1.4
+                    }}>{stat.label}</div>
+                  </div>
+                ))}
               </div>
             </div>
 
-            <div style={{
-              background: 'var(--gradient)', borderRadius: 'var(--radius-card)', padding: 'var(--card-padding)',
-              textAlign: 'center', color: '#fff'
+            <div style={{ height: 1, background: 'var(--border)' }} />
+
+            <p style={{
+              fontFamily: 'Inter', fontSize: 13, color: 'var(--text-tertiary)',
+              lineHeight: 1.6, margin: 0
             }}>
-              <div style={{ fontFamily: 'Inter', fontSize: 12, opacity: 0.8, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>
-                Potential Annual Savings
-              </div>
-              <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: 48, fontWeight: 600 }}>
-                ${annualCostSavings.toLocaleString()}
-              </div>
-              <div style={{ fontFamily: 'Inter', fontSize: 14, opacity: 0.9, marginTop: 8 }}>
-                Stop paying for manual data entry.
-              </div>
-            </div>
+              Based on <strong style={{ color: 'var(--text-secondary)' }}>{tasks} tasks/day</strong> at <strong style={{ color: 'var(--text-secondary)' }}>{timePerTask} min each</strong> — automated away entirely.
+            </p>
           </div>
+
         </div>
       </div>
     </section>
@@ -2565,7 +3095,7 @@ function FAQ() {
           }}>FAQ</span>
           <h2 style={{
             fontFamily: 'Space Grotesk, sans-serif', fontSize: 'clamp(32px, 4vw, 48px)',
-            lineHeight: 1.1, color: 'var(--text-primary)', fontWeight: 600,
+            lineHeight: 1.1, color: 'var(--success)', fontWeight: 600,
             letterSpacing: '-0.02em'
           }}>
             Common questions.
@@ -2845,6 +3375,25 @@ export default function App() {
         animation-play-state: paused;
       }
 
+      .marquee-logo {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        background: linear-gradient(135deg, #f6f7f8 0%, #bdbfc1 50%, #f6f7f8 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        white-space: nowrap;
+        letter-spacing: -0.02em;
+        opacity: 0.8;
+      }
+      .light-mode .marquee-logo {
+        background: linear-gradient(135deg, #1a1a1a 0%, #4a4a4a 50%, #1a1a1a 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
       .tech-row-1 {
         display: inline-flex; white-space: nowrap;
         animation: marquee 45s linear infinite;
@@ -2902,6 +3451,7 @@ export default function App() {
 
       @media (max-width: 1024px) {
         .case-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+        .automation-grid { grid-template-columns: repeat(2, 1fr) !important; }
       }
 
       @media (max-width: 768px) {
@@ -2910,6 +3460,7 @@ export default function App() {
         .nav-links { gap: 16px; }
         .two-col { grid-template-columns: 1fr !important; }
         .three-col { grid-template-columns: 1fr !important; }
+        .automation-grid { grid-template-columns: 1fr !important; }
         .about-grid { grid-template-columns: 1fr !important; gap: 48px !important; }
         .about-grid > div:first-child { justify-content: center !important; align-items: center !important; text-align: center; }
         .about-grid > div:first-child img { max-width: 280px; width: 100%; }
@@ -2958,6 +3509,15 @@ export default function App() {
         .cal-step1-grid { grid-template-columns: 1fr !important; }
         .cal-step1-grid > div:first-child { border-right: none !important; border-bottom: 1px solid var(--border); }
         .cal-form-grid { grid-template-columns: 1fr !important; }
+        .testimonials-grid { grid-template-columns: 1fr !important; }
+      }
+
+      @media (max-width: 900px) and (min-width: 641px) {
+        .testimonials-grid { grid-template-columns: 1fr 1fr !important; }
+      }
+
+      @media (max-width: 1100px) {
+        .hero-toast-column { display: none; }
       }
     `;
     document.head.appendChild(style);
@@ -2978,11 +3538,11 @@ export default function App() {
       <Navbar theme={theme} toggleTheme={toggleTheme} />
       <main>
         <Hero />
-        <LogoMarquee />
+        <LogoMarquee theme={theme} />
         <About />
         <TechStack theme={theme} />
-        <Workflows />
         <CaseStudies theme={theme} />
+        <AutomationShowcase theme={theme} />
         <Process />
         <Testimonials />
         <ROICalculator />
