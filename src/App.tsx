@@ -237,20 +237,23 @@ const STEPS = [
     number: '01',
     title: 'Discovery Call',
     description: 'We map your current process together. I ask the right questions. You know exactly what we are building before I write a single line of logic.',
-    icon: 'search'
+    duration: '~1 hour',
+    effort: 'Your time: 1 call',
   },
   {
     number: '02',
     title: 'Build & Test',
     description: 'I build with your real data, stress-test for edge cases, and QA internally. You see a working system — not a prototype.',
-    icon: 'layers'
+    duration: '4–8 weeks',
+    effort: 'Your time: Feedback only',
   },
   {
     number: '03',
     title: 'Handover & Support',
     description: 'Loom walkthrough, Notion docs, two weeks post-launch support. Your team runs it. You own it.',
-    icon: 'check-circle'
-  }
+    duration: '2 weeks',
+    effort: 'Your time: 1 walkthrough',
+  },
 ];
 
 const TECH_STACK = [
@@ -2252,19 +2255,11 @@ function AutomationShowcase({ theme }: { theme: string }) {
 }
 
 function Process() {
-  const getIcon = (name: string) => {
-    switch(name) {
-      case 'search': return <Search size={20} color="var(--text-tertiary)" />;
-      case 'layers': return <Layers size={20} color="var(--text-tertiary)" />;
-      case 'check-circle': return <CheckCircle size={20} color="var(--text-tertiary)" />;
-      default: return <Search size={20} color="var(--text-tertiary)" />;
-    }
-  };
-
   return (
-    <section id="process" style={{ padding: 'var(--section-padding) 0' }}>
+    <section id="process" style={{ padding: 'var(--section-padding) 0', background: 'var(--bg)' }}>
       <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto', padding: '0 24px' }}>
-        <div style={{ textAlign: 'center', marginBottom: 64 }}>
+
+        <div style={{ textAlign: 'center', marginBottom: 72 }}>
           <span style={{
             fontFamily: 'Inter', fontSize: 11, fontWeight: 600,
             letterSpacing: '0.08em', textTransform: 'uppercase',
@@ -2273,37 +2268,95 @@ function Process() {
           <h2 style={{
             fontFamily: 'Space Grotesk, sans-serif', fontSize: 'clamp(32px, 4vw, 48px)',
             lineHeight: 1.1, color: 'var(--success)', fontWeight: 600,
-            letterSpacing: '-0.02em'
+            letterSpacing: '-0.02em',
           }}>
             Simple. No surprises.
           </h2>
         </div>
 
-        <div style={{
-          display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: 16
-        }} className="three-col">
-          {STEPS.map((step, i) => (
-            <div key={i} className="fade-init card-hover" style={{
-              background: 'var(--surface)', border: '1px solid var(--border)',
-              borderRadius: 'var(--radius-card)', padding: 'var(--card-padding)',
-              display: 'flex', flexDirection: 'column', gap: 16, minHeight: 240
-            }}>
-              <div style={{ fontFamily: 'Inter', fontWeight: 600, fontSize: 11, color: 'var(--accent)' }}>
-                {step.number}
+        {/* Timeline */}
+        <div style={{ position: 'relative' }}>
+          {/* Connecting dashed line */}
+          <div className="process-line" style={{
+            position: 'absolute', top: 26,
+            left: '16.67%', right: '16.67%',
+            borderTop: '1.5px dashed var(--border)',
+            zIndex: 0,
+          }} />
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)' }} className="process-grid">
+            {STEPS.map((step, i) => (
+              <div key={i} style={{
+                display: 'flex', flexDirection: 'column', alignItems: 'center',
+                padding: '0 32px', position: 'relative', zIndex: 1,
+              }}>
+                {/* Circle node */}
+                <div style={{
+                  width: 52, height: 52, borderRadius: '50%',
+                  background: 'rgba(62,198,138,0.08)',
+                  border: '1.5px solid rgba(62,198,138,0.45)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: 16,
+                  color: 'var(--success)',
+                  marginBottom: 24, flexShrink: 0,
+                  boxShadow: '0 0 0 8px var(--bg)',
+                }}>
+                  {step.number}
+                </div>
+
+                {/* Duration badge */}
+                <div style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 5,
+                  background: 'rgba(62,198,138,0.07)',
+                  border: '1px solid rgba(62,198,138,0.2)',
+                  borderRadius: 100, padding: '4px 12px',
+                  fontFamily: 'Inter', fontSize: 11, fontWeight: 600,
+                  color: 'var(--success)', marginBottom: 16,
+                }}>
+                  <Clock size={10} />
+                  {step.duration}
+                </div>
+
+                {/* Title */}
+                <h3 style={{
+                  fontFamily: 'Space Grotesk, sans-serif', fontWeight: 600, fontSize: 18,
+                  color: 'var(--text-primary)', textAlign: 'center', marginBottom: 12,
+                }}>
+                  {step.title}
+                </h3>
+
+                {/* Description */}
+                <p style={{
+                  fontFamily: 'Inter', fontSize: 14, color: 'var(--text-secondary)',
+                  lineHeight: 1.65, textAlign: 'center', marginBottom: 20,
+                }}>
+                  {step.description}
+                </p>
+
+                {/* Effort pill */}
+                <div style={{
+                  marginTop: 'auto',
+                  fontFamily: 'Inter', fontSize: 11, color: 'var(--text-tertiary)',
+                  background: 'var(--surface)', border: '1px solid var(--border)',
+                  borderRadius: 100, padding: '4px 12px',
+                }}>
+                  {step.effort}
+                </div>
               </div>
-              <h3 style={{ fontFamily: 'Inter', fontWeight: 600, fontSize: 17, color: 'var(--text-primary)' }}>
-                {step.title}
-              </h3>
-              <p style={{ fontFamily: 'Inter', fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-                {step.description}
-              </p>
-              <div style={{ marginTop: 'auto' }}>
-                {getIcon(step.icon)}
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
+
+        {/* Total time summary */}
+        <p style={{
+          textAlign: 'center', marginTop: 56,
+          fontFamily: 'Inter', fontSize: 14, color: 'var(--text-tertiary)',
+        }}>
+          Most projects complete in{' '}
+          <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>4–8 weeks</span>
+          {' '}end to end.
+        </p>
+
       </div>
     </section>
   );
@@ -3517,7 +3570,12 @@ export default function App() {
       }
 
       @media (max-width: 1100px) {
-        .hero-toast-column { display: none; }
+        .hero-side-diagram { display: none; }
+      }
+
+      @media (max-width: 720px) {
+        .process-grid { grid-template-columns: 1fr !important; gap: 48px; }
+        .process-line { display: none; }
       }
     `;
     document.head.appendChild(style);
