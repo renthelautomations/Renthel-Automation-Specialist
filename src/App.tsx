@@ -2524,6 +2524,7 @@ function GoogleCalendar() {
   });
   const [form, setForm]       = useState({ name: '', email: '', notes: '' });
   const [submitted, setSubmitted] = useState(false);
+  const [booking, setBooking]     = useState(false);
   const [formError, setFormError]   = useState('');
 
   // Fetch real availability from Cal.com when date changes
@@ -2579,7 +2580,7 @@ function GoogleCalendar() {
   const fmtLong  = (d: Date) => d.toLocaleDateString('en-US', { weekday: 'long',  month: 'long',  day: 'numeric', year: 'numeric' });
   const fmtShort = (d: Date) => d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (!form.name.trim() || !form.email.trim()) {
       setFormError('Please fill in your name and email.'); return;
     }
@@ -2588,24 +2589,36 @@ function GoogleCalendar() {
     }
     if (!selectedSlot) return;
 
-    // Show success immediately — fire API in background
-    setSubmitted(true);
+    setFormError('');
+    setBooking(true);
 
-    const visitorTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    fetch('https://api.cal.com/v2/bookings', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${CAL_API_KEY}`,
-        'cal-api-version': '2024-08-13',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        start: selectedSlot.time,
-        eventTypeId: CAL_EVENT_TYPE_ID,
-        attendee: { name: form.name, email: form.email, timeZone: visitorTz, language: 'en' },
-        ...(form.notes ? { metadata: { notes: form.notes } } : {}),
-      }),
-    }).catch(() => {});
+    try {
+      const visitorTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const res = await fetch('https://api.cal.com/v2/bookings', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${CAL_API_KEY}`,
+          'cal-api-version': '2024-08-13',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          start: selectedSlot.time,
+          eventTypeId: CAL_EVENT_TYPE_ID,
+          attendee: { name: form.name, email: form.email, timeZone: visitorTz, language: 'en' },
+          ...(form.notes ? { metadata: { notes: form.notes } } : {}),
+        }),
+      });
+      const data = await res.json();
+      if (data.status === 'success') {
+        setSubmitted(true);
+      } else {
+        setFormError('Something went wrong. Please try again or reach out directly.');
+      }
+    } catch {
+      setFormError('Network error. Please check your connection and try again.');
+    } finally {
+      setBooking(false);
+    }
   };
 
   const inputSt: React.CSSProperties = {
@@ -2973,16 +2986,18 @@ function GoogleCalendar() {
                   }}>{formError}</div>
                 )}
 
-                <button onClick={handleConfirm} style={{
+                <button onClick={handleConfirm} disabled={booking} style={{
                   padding: '14px 28px', borderRadius: 10, border: 'none',
                   background: 'var(--gradient)', color: '#fff',
                   fontFamily: 'Inter', fontSize: 15, fontWeight: 600,
-                  cursor: 'pointer', letterSpacing: '0.01em', width: '100%',
+                  cursor: booking ? 'not-allowed' : 'pointer',
+                  letterSpacing: '0.01em', width: '100%',
                   transition: 'opacity 0.15s',
+                  opacity: booking ? 0.65 : 1,
                 }}
-                onMouseEnter={e => (e.currentTarget as HTMLElement).style.opacity = '0.85'}
-                onMouseLeave={e => (e.currentTarget as HTMLElement).style.opacity = '1'}
-                >Confirm Booking</button>
+                onMouseEnter={e => { if (!booking) (e.currentTarget as HTMLElement).style.opacity = '0.85'; }}
+                onMouseLeave={e => { if (!booking) (e.currentTarget as HTMLElement).style.opacity = '1'; }}
+                >{booking ? 'Booking…' : 'Confirm Booking'}</button>
 
                 <p style={{ fontFamily: 'Inter', fontSize: 12, color: 'var(--text-tertiary)', textAlign: 'center', lineHeight: 1.6 }}>
                   You'll receive a calendar invite and confirmation email shortly after booking.
