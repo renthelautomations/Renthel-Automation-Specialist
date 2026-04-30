@@ -839,15 +839,17 @@ function FloatingToasts({ list, startDelay = 0 }: { list: typeof LEFT_TOASTS; st
           <motion.div
             key={t.id}
             layout
-            className="glass-toast"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16, transition: { duration: 0.3 } }}
             transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
             style={{
+              background: 'var(--surface)',
+              border: '1px solid var(--border)',
               borderRadius: 12,
               padding: '10px 14px',
               display: 'flex', alignItems: 'center', gap: 10,
+              boxShadow: '0 2px 12px rgba(0,0,0,0.12)',
             }}
           >
             <div style={{
@@ -943,25 +945,28 @@ function Hero() {
           justifyContent: 'center', gap: 12, marginTop: 36
         }}>
           <button onClick={() => document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' })}
-            className="glass-btn-primary"
             style={{
+              background: 'var(--gradient)', color: '#fff', border: 'none',
               fontFamily: 'Inter', fontWeight: 600, fontSize: 15,
               padding: '13px 28px', borderRadius: 'var(--radius-btn)',
-              cursor: 'pointer',
+              cursor: 'pointer', transition: 'opacity 150ms'
             }}
+            onMouseEnter={e => (e.currentTarget as HTMLElement).style.opacity = '0.85'}
+            onMouseLeave={e => (e.currentTarget as HTMLElement).style.opacity = '1'}
           >
             See My Work
           </button>
           <button onClick={() => document.getElementById('calendar')?.scrollIntoView({ behavior: 'smooth' })}
-            className="glass-btn-secondary"
             style={{
+              background: 'transparent',
+              border: '1px solid var(--border)',
               color: 'var(--text-secondary)',
               fontFamily: 'Inter', fontWeight: 400, fontSize: 15,
               padding: '13px 28px', borderRadius: 'var(--radius-btn)',
-              cursor: 'pointer',
+              cursor: 'pointer', transition: 'border-color 150ms, color 150ms'
             }}
-            onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = 'var(--text-primary)'}
-            onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)'}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-hover)'; (e.currentTarget as HTMLElement).style.color = 'var(--text-primary)'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'; (e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)'; }}
           >
             Book a Call
           </button>
@@ -3697,56 +3702,6 @@ export default function App() {
 
         /* Sticky CTA smaller on small screens */
         .sticky-cta { bottom: 16px !important; right: 16px !important; font-size: 13px !important; padding: 10px 18px !important; }
-      }
-
-      /* ── Apple liquid glass ── */
-      .glass-toast {
-        background: rgba(255,255,255,0.07) !important;
-        border: 1px solid rgba(255,255,255,0.16) !important;
-        backdrop-filter: blur(20px) saturate(180%);
-        -webkit-backdrop-filter: blur(20px) saturate(180%);
-        box-shadow: 0 8px 32px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.14) !important;
-      }
-      .light-mode .glass-toast {
-        background: rgba(255,255,255,0.62) !important;
-        border: 1px solid rgba(255,255,255,0.88) !important;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.92) !important;
-      }
-
-      .glass-btn-primary {
-        background: rgba(62,198,138,0.22) !important;
-        border: 1px solid rgba(62,198,138,0.48) !important;
-        backdrop-filter: blur(20px) saturate(180%);
-        -webkit-backdrop-filter: blur(20px) saturate(180%);
-        box-shadow: 0 8px 28px rgba(62,198,138,0.22), inset 0 1px 0 rgba(255,255,255,0.18) !important;
-        color: #fff !important;
-        transition: opacity 150ms, box-shadow 150ms !important;
-      }
-      .glass-btn-primary:hover {
-        box-shadow: 0 12px 36px rgba(62,198,138,0.35), inset 0 1px 0 rgba(255,255,255,0.22) !important;
-        opacity: 0.9;
-      }
-      .light-mode .glass-btn-primary {
-        background: rgba(62,198,138,0.28) !important;
-        border: 1px solid rgba(62,198,138,0.6) !important;
-        box-shadow: 0 8px 28px rgba(62,198,138,0.28), inset 0 1px 0 rgba(255,255,255,0.65) !important;
-      }
-
-      .glass-btn-secondary {
-        background: rgba(255,255,255,0.07) !important;
-        border: 1px solid rgba(255,255,255,0.18) !important;
-        backdrop-filter: blur(20px) saturate(180%);
-        -webkit-backdrop-filter: blur(20px) saturate(180%);
-        box-shadow: 0 8px 28px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.12) !important;
-        transition: box-shadow 150ms, color 150ms !important;
-      }
-      .glass-btn-secondary:hover {
-        box-shadow: 0 12px 36px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.2) !important;
-      }
-      .light-mode .glass-btn-secondary {
-        background: rgba(255,255,255,0.62) !important;
-        border: 1px solid rgba(255,255,255,0.88) !important;
-        box-shadow: 0 8px 28px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.92) !important;
       }
     `;
     document.head.appendChild(style);
