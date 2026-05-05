@@ -3324,6 +3324,51 @@ function ChatWidgetToggle() {
     if (n8nToggle) { n8nToggle.click(); setIsOpen(o => !o); }
   };
 
+  // Inject animated robot icon into n8n chat header
+  useEffect(() => {
+    if (!isOpen) return;
+    const inject = () => {
+      const header = document.querySelector('.chat-layout .chat-header');
+      if (!header || header.querySelector('.ar-bot-header-icon')) return;
+
+      // Animate existing title and subtitle text
+      const h1 = header.querySelector('h1');
+      const p  = header.querySelector('p');
+      if (h1) h1.classList.add('ar-title-anim');
+
+      // Wrap subtitle + icon in a row
+      const iconWrap = document.createElement('div');
+      iconWrap.className = 'ar-bot-header-icon';
+      iconWrap.innerHTML = `
+        <svg width="52" height="52" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="7" width="16" height="12" rx="4" fill="rgba(62,198,138,0.12)" stroke="#3EC68A" stroke-width="1.2"/>
+          <circle class="ar-eye-l" cx="9" cy="12" r="2" fill="#3EC68A"/>
+          <circle class="ar-eye-r" cx="15" cy="12" r="2" fill="#3EC68A"/>
+          <circle cx="9.7" cy="11.3" r="0.65" fill="white"/>
+          <circle cx="15.7" cy="11.3" r="0.65" fill="white"/>
+          <path d="M9.5 15.5 Q12 17 14.5 15.5" stroke="#3EC68A" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+          <line x1="12" y1="7" x2="12" y2="4.5" stroke="#3EC68A" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="12" cy="3.5" r="1.2" fill="#3EC68A"/>
+          <rect x="2" y="10.5" width="2" height="3" rx="1" fill="#3EC68A" opacity="0.55"/>
+          <rect x="20" y="10.5" width="2" height="3" rx="1" fill="#3EC68A" opacity="0.55"/>
+        </svg>
+      `;
+
+      if (p && p.parentNode) {
+        const row = document.createElement('div');
+        row.className = 'ar-subtitle-row';
+        p.classList.add('ar-subtitle-anim');
+        p.parentNode.insertBefore(row, p);
+        row.appendChild(p);
+        row.appendChild(iconWrap);
+      } else {
+        header.appendChild(iconWrap);
+      }
+    };
+    const t = setTimeout(inject, 250);
+    return () => clearTimeout(t);
+  }, [isOpen]);
+
   // Close on outside click
   useEffect(() => {
     if (!isOpen) return;
@@ -3600,13 +3645,37 @@ export default function App() {
       .chat-window-toggle { display: none !important; }
       /* position window above our custom button (bottom 24px + height 54px + 14px gap) */
       .chat-window-wrapper { bottom: 92px !important; right: 24px !important; }
+      /* ── header spacing ── */
+      .chat-layout .chat-header {
+        padding: 14px 16px !important;
+        gap: 4px !important;
+      }
       .chat-layout .chat-header h1 {
         font-weight: 600 !important;
         font-family: 'Inter', sans-serif !important;
+        margin: 0 !important;
+        line-height: 1.3 !important;
       }
       .chat-layout .chat-header p {
         color: #6B6F7A !important;
         font-family: 'Inter', sans-serif !important;
+        margin: 0 !important;
+        line-height: 1.3 !important;
+      }
+      .ar-subtitle-row {
+        margin-top: 2px !important;
+      }
+      /* ── message area spacing ── */
+      .chat-messages-list {
+        padding: 12px 12px !important;
+        gap: 8px !important;
+      }
+      .chat-message {
+        margin-bottom: 0 !important;
+      }
+      /* ── input area spacing ── */
+      .chat-inputs {
+        padding: 10px 12px !important;
       }
       .chat-inputs textarea {
         color: #F2F2F3 !important;
@@ -3662,6 +3731,54 @@ export default function App() {
       }
       body.light-mode .chat-layout .chat-header p {
         color: #6B7280 !important;
+        margin: 0 !important;
+      }
+
+      /* ── animated robot icon in chat header ── */
+      /* subtitle row: text left, icon right */
+      .ar-subtitle-row {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+      }
+      @keyframes ar-header-float {
+        0%, 100% { transform: translateY(0px); }
+        50%       { transform: translateY(-5px); }
+      }
+      @keyframes ar-blink {
+        0%, 88%, 100% { transform: scaleY(1); }
+        93%           { transform: scaleY(0.08); }
+      }
+      @keyframes ar-title-pulse {
+        0%, 100% { opacity: 1; }
+        50%       { opacity: 0.7; }
+      }
+      @keyframes ar-shimmer {
+        0%   { background-position: -200% center; }
+        100% { background-position:  200% center; }
+      }
+      .ar-bot-header-icon {
+        animation: ar-header-float 3s ease-in-out infinite;
+        flex-shrink: 0;
+      }
+      .ar-eye-l {
+        transform-origin: 9px 12px;
+        animation: ar-blink 5s ease-in-out infinite;
+      }
+      .ar-eye-r {
+        transform-origin: 15px 12px;
+        animation: ar-blink 5s ease-in-out infinite 0.18s;
+      }
+      h1.ar-title-anim {
+        animation: ar-title-pulse 3s ease-in-out infinite;
+      }
+      p.ar-subtitle-anim {
+        background: linear-gradient(90deg, #6B6F7A 0%, #3EC68A 50%, #6B6F7A 100%);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: ar-shimmer 4s linear infinite;
       }
     `;
     document.head.appendChild(chatStyle);
