@@ -3356,12 +3356,12 @@ function ChatWidgetToggle() {
             exit={{ opacity: 0, x: 14, scale: 0.88 }}
             transition={{ duration: 0.28, ease: [0.4, 0, 0.2, 1] }}
             style={{
-              background: '#0F1014',
-              border: '1px solid rgba(255,255,255,0.1)',
+              background: 'var(--surface)',
+              border: '1px solid var(--border)',
               borderRadius: 20, padding: '9px 16px',
-              color: '#F2F2F3', fontSize: 13,
+              color: 'var(--text-primary)', fontSize: 13,
               fontFamily: 'Inter, sans-serif', fontWeight: 500,
-              boxShadow: '0 4px 20px rgba(0,0,0,0.45)',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
               whiteSpace: 'nowrap', pointerEvents: 'none',
             }}
           >
@@ -3622,9 +3622,46 @@ export default function App() {
         font-family: 'Inter', sans-serif !important;
       }
       .chat-powered-by { display: none !important; }
-      /* lift chat above sticky Book a Call button (28px bottom + ~44px height + 12px gap) */
+      /* lift chat above sticky Book a Call button */
       body.sticky-cta-visible .chat-window-wrapper {
         bottom: 156px !important;
+      }
+
+      /* ── light mode overrides ── */
+      body.light-mode {
+        --chat--color-white: #111827 !important;
+        --chat--color-light: #FFFFFF !important;
+        --chat--color-light-shade-50: #F3F4F6 !important;
+        --chat--color-light-shade-100: rgba(0,0,0,0.08) !important;
+        --chat--color-medium: rgba(0,0,0,0.06) !important;
+        --chat--color-dark: #111827 !important;
+        --chat--window--border: 1px solid rgba(0,0,0,0.08) !important;
+        --chat--header--background: #FFFFFF !important;
+        --chat--header--color: #111827 !important;
+        --chat--header--border-bottom: 1px solid rgba(0,0,0,0.08) !important;
+        --chat--body--background: #F9FAFB !important;
+        --chat--message--bot--background: #F3F4F6 !important;
+        --chat--message--bot--color: #111827 !important;
+        --chat--message--bot--border: 1px solid rgba(0,0,0,0.07) !important;
+        --chat--input--background: #FFFFFF !important;
+        --chat--input--text-color: #111827 !important;
+        --chat--input--container--background: #F3F4F6 !important;
+        --chat--input--container--border: 1px solid rgba(0,0,0,0.08) !important;
+        --chat--footer--background: #FFFFFF !important;
+        --chat--footer--color: #6B7280 !important;
+        --chat--footer--border-top: 1px solid rgba(0,0,0,0.08) !important;
+      }
+      body.light-mode .chat-window {
+        box-shadow: 0 24px 64px rgba(0,0,0,0.12) !important;
+      }
+      body.light-mode .chat-inputs textarea {
+        color: #111827 !important;
+      }
+      body.light-mode .chat-inputs textarea::placeholder {
+        color: #9CA3AF !important;
+      }
+      body.light-mode .chat-layout .chat-header p {
+        color: #6B7280 !important;
       }
     `;
     document.head.appendChild(chatStyle);
