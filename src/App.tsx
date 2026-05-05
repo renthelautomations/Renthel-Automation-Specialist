@@ -536,7 +536,8 @@ function Navbar({ theme, toggleTheme }: { theme: string; toggleTheme: () => void
           display: 'flex', justifyContent: 'space-between', alignItems: 'center'
         }}>
           {/* Logo */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>
             <img src={logoImg} alt="Renthel Cueto logo" style={{
               height: 28, width: 'auto',
               filter: theme === 'dark' ? 'invert(1)' : 'none',
