@@ -959,13 +959,16 @@ function Hero() {
           >
             See My Work
           </button>
-          <div className="hero-book-call-wrapper">
-            <div className="hero-book-call-glow" />
-            <button onClick={() => document.getElementById('calendar')?.scrollIntoView({ behavior: 'smooth' })}
-              className="hero-book-call-btn"
-            >
-              Book a Call
-            </button>
+          <div className="hero-book-call-outer">
+            <div className="hero-book-call-glow-bg" />
+            <div className="hero-book-call-clip">
+              <div className="hero-book-call-snake" />
+              <button onClick={() => document.getElementById('calendar')?.scrollIntoView({ behavior: 'smooth' })}
+                className="hero-book-call-btn"
+              >
+                Book a Call
+              </button>
+            </div>
           </div>
         </div>
 
@@ -3911,28 +3914,75 @@ export default function App() {
         animation: heroFadeIn 600ms ease-out 200ms both;
       }
 
-      /* ── Hero Book a Call — green button with rotating glow ── */
-      @keyframes hero-glow-spin {
-        from { transform: rotate(0deg); }
-        to   { transform: rotate(360deg); }
+      /* ── Hero Book a Call — snake border glow ── */
+      @keyframes hero-snake-spin {
+        from { transform: translate(-50%, -50%) rotate(0deg); }
+        to   { transform: translate(-50%, -50%) rotate(360deg); }
       }
 
-      .hero-book-call-wrapper {
+      /* outer container — just holds layers in place */
+      .hero-book-call-outer {
         position: relative;
         display: inline-block;
-        border-radius: 10px;
-        padding: 2px;
         flex-shrink: 0;
       }
 
-      .hero-book-call-glow {
+      /* blurred glow layer — slightly oversized, not clipped → the "halo" */
+      .hero-book-call-glow-bg {
         position: absolute;
-        inset: -4px;
-        border-radius: 12px;
-        background: conic-gradient(from 0deg, transparent 0%, #3EC68A 20%, #A8F5D2 40%, #3EC68A 60%, transparent 80%);
-        animation: hero-glow-spin 2.8s linear infinite;
-        filter: blur(6px);
-        opacity: 0.85;
+        inset: -5px;
+        border-radius: 14px;
+        overflow: hidden;
+        z-index: 0;
+      }
+      .hero-book-call-glow-bg::before {
+        content: '';
+        position: absolute;
+        top: 50%; left: 50%;
+        width: 300%; height: 300%;
+        background: conic-gradient(
+          from 0deg,
+          transparent 0deg,
+          transparent 300deg,
+          rgba(62,198,138,0.0) 308deg,
+          rgba(62,198,138,0.6) 322deg,
+          #A8F5D2 335deg,
+          #ffffff 341deg,
+          #A8F5D2 347deg,
+          rgba(62,198,138,0.6) 354deg,
+          transparent 360deg
+        );
+        animation: hero-snake-spin 2.5s linear infinite;
+        filter: blur(10px);
+      }
+
+      /* clip layer — overflow hidden so snake shows only at border */
+      .hero-book-call-clip {
+        position: relative;
+        z-index: 1;
+        border-radius: 10px;
+        padding: 2px;
+        overflow: hidden;
+      }
+
+      /* the sharp snake arc that travels around the border */
+      .hero-book-call-snake {
+        position: absolute;
+        top: 50%; left: 50%;
+        width: 300%; height: 300%;
+        background: conic-gradient(
+          from 0deg,
+          transparent 0deg,
+          transparent 305deg,
+          rgba(62,198,138,0.15) 312deg,
+          #3EC68A 323deg,
+          #A8F5D2 334deg,
+          #ffffff 341deg,
+          #A8F5D2 348deg,
+          #3EC68A 355deg,
+          transparent 360deg
+        );
+        animation: hero-snake-spin 2.5s linear infinite;
         z-index: 0;
       }
 
@@ -3948,14 +3998,13 @@ export default function App() {
         padding: 13px 28px;
         border-radius: 8px;
         cursor: pointer;
-        transition: background 150ms, box-shadow 150ms;
+        transition: background 150ms;
         display: block;
         white-space: nowrap;
       }
 
       .hero-book-call-btn:hover {
         background: #35b07a;
-        box-shadow: 0 4px 24px rgba(62, 198, 138, 0.45);
       }
 
       .fade-init {
