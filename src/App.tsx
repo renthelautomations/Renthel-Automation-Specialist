@@ -3943,17 +3943,14 @@ export default function App() {
         background: conic-gradient(
           from 0deg,
           transparent 0deg,
-          transparent 300deg,
-          rgba(62,198,138,0.0) 308deg,
-          rgba(62,198,138,0.6) 322deg,
-          #A8F5D2 335deg,
-          #ffffff 341deg,
-          #A8F5D2 347deg,
-          rgba(62,198,138,0.6) 354deg,
-          transparent 360deg
+          transparent 344deg,
+          rgba(62,198,138,0.35) 350deg,
+          rgba(168,245,210,0.5) 355deg,
+          rgba(62,198,138,0.35) 360deg
         );
-        animation: hero-snake-spin 2.5s linear infinite;
-        filter: blur(10px);
+        animation: hero-snake-spin 3.5s linear infinite;
+        filter: blur(7px);
+        opacity: 0.7;
       }
 
       /* clip layer — overflow hidden so snake shows only at border */
@@ -3973,16 +3970,13 @@ export default function App() {
         background: conic-gradient(
           from 0deg,
           transparent 0deg,
-          transparent 305deg,
-          rgba(62,198,138,0.15) 312deg,
-          #3EC68A 323deg,
-          #A8F5D2 334deg,
-          #ffffff 341deg,
-          #A8F5D2 348deg,
-          #3EC68A 355deg,
+          transparent 346deg,
+          #3EC68A 352deg,
+          #d4fcea 356deg,
+          #3EC68A 359deg,
           transparent 360deg
         );
-        animation: hero-snake-spin 2.5s linear infinite;
+        animation: hero-snake-spin 3.5s linear infinite;
         z-index: 0;
       }
 
