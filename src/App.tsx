@@ -959,20 +959,14 @@ function Hero() {
           >
             See My Work
           </button>
-          <button onClick={() => document.getElementById('calendar')?.scrollIntoView({ behavior: 'smooth' })}
-            style={{
-              background: 'transparent',
-              border: '1px solid var(--border)',
-              color: 'var(--text-secondary)',
-              fontFamily: 'Inter', fontWeight: 400, fontSize: 15,
-              padding: '13px 28px', borderRadius: 'var(--radius-btn)',
-              cursor: 'pointer', transition: 'border-color 150ms, color 150ms'
-            }}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-hover)'; (e.currentTarget as HTMLElement).style.color = 'var(--text-primary)'; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'; (e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)'; }}
-          >
-            Book a Call
-          </button>
+          <div className="hero-book-call-wrapper">
+            <div className="hero-book-call-glow" />
+            <button onClick={() => document.getElementById('calendar')?.scrollIntoView({ behavior: 'smooth' })}
+              className="hero-book-call-btn"
+            >
+              Book a Call
+            </button>
+          </div>
         </div>
 
         <div style={{
@@ -3915,6 +3909,53 @@ export default function App() {
 
       .hero-content {
         animation: heroFadeIn 600ms ease-out 200ms both;
+      }
+
+      /* ── Hero Book a Call — green button with rotating glow ── */
+      @keyframes hero-glow-spin {
+        from { transform: rotate(0deg); }
+        to   { transform: rotate(360deg); }
+      }
+
+      .hero-book-call-wrapper {
+        position: relative;
+        display: inline-block;
+        border-radius: 10px;
+        padding: 2px;
+        flex-shrink: 0;
+      }
+
+      .hero-book-call-glow {
+        position: absolute;
+        inset: -4px;
+        border-radius: 12px;
+        background: conic-gradient(from 0deg, transparent 0%, #3EC68A 20%, #A8F5D2 40%, #3EC68A 60%, transparent 80%);
+        animation: hero-glow-spin 2.8s linear infinite;
+        filter: blur(6px);
+        opacity: 0.85;
+        z-index: 0;
+      }
+
+      .hero-book-call-btn {
+        position: relative;
+        z-index: 1;
+        background: #3EC68A;
+        color: #fff;
+        border: none;
+        font-family: Inter, sans-serif;
+        font-weight: 600;
+        font-size: 15px;
+        padding: 13px 28px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 150ms, box-shadow 150ms;
+        display: block;
+        white-space: nowrap;
+      }
+
+      .hero-book-call-btn:hover {
+        background: #35b07a;
+        box-shadow: 0 4px 24px rgba(62, 198, 138, 0.45);
       }
 
       .fade-init {
