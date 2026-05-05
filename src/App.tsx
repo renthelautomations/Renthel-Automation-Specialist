@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
+import '@n8n/chat/style.css';
+import { createChat } from '@n8n/chat';
 import { motion, AnimatePresence } from 'motion/react';
 import profilePic from '../Assets/ren techy2 copy.png';
 import logoImg   from '../Assets/logo.png';
@@ -3299,6 +3301,130 @@ function FAQ() {
   );
 }
 
+function ChatWidgetToggle() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [showHint, setShowHint] = useState(false);
+  const [ctaVisible, setCtaVisible] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setCtaVisible(window.scrollY > window.innerHeight * 0.8);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  useEffect(() => {
+    const show = () => { setShowHint(true); setTimeout(() => setShowHint(false), 4000); };
+    const t1 = setTimeout(show, 5000);
+    const interval = setInterval(show, 15000);
+    return () => { clearTimeout(t1); clearInterval(interval); };
+  }, []);
+
+  const handleToggle = () => {
+    const n8nToggle = document.querySelector('.chat-window-toggle') as HTMLElement;
+    if (n8nToggle) { n8nToggle.click(); setIsOpen(o => !o); }
+  };
+
+  // Close on outside click
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleOutside = (e: MouseEvent) => {
+      const wrapper = document.querySelector('.chat-window-wrapper');
+      const target = e.target as Node;
+      if (wrapper && !wrapper.contains(target)) {
+        const n8nToggle = document.querySelector('.chat-window-toggle') as HTMLElement;
+        if (n8nToggle) n8nToggle.click();
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleOutside);
+    return () => document.removeEventListener('mousedown', handleOutside);
+  }, [isOpen]);
+
+  const bottom = ctaVisible ? 88 : 24;
+
+  return (
+    <div style={{
+      position: 'fixed', bottom, right: 24, zIndex: 10001,
+      display: 'flex', alignItems: 'center', gap: 12,
+      transition: 'bottom 0.3s ease',
+    }}>
+      <AnimatePresence>
+        {showHint && !isOpen && (
+          <motion.div
+            initial={{ opacity: 0, x: 14, scale: 0.88 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            exit={{ opacity: 0, x: 14, scale: 0.88 }}
+            transition={{ duration: 0.28, ease: [0.4, 0, 0.2, 1] }}
+            style={{
+              background: '#0F1014',
+              border: '1px solid rgba(255,255,255,0.1)',
+              borderRadius: 20, padding: '9px 16px',
+              color: '#F2F2F3', fontSize: 13,
+              fontFamily: 'Inter, sans-serif', fontWeight: 500,
+              boxShadow: '0 4px 20px rgba(0,0,0,0.45)',
+              whiteSpace: 'nowrap', pointerEvents: 'none',
+            }}
+          >
+            Ask Ar anything ✨
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <motion.button
+        onClick={handleToggle}
+        animate={!isOpen ? {
+          boxShadow: [
+            '0 4px 18px rgba(62,198,138,0.35)',
+            '0 4px 30px rgba(62,198,138,0.65)',
+            '0 4px 18px rgba(62,198,138,0.35)',
+          ],
+        } : { boxShadow: '0 4px 18px rgba(62,198,138,0.35)' }}
+        transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+        whileHover={{ scale: 1.06 }}
+        whileTap={{ scale: 0.94 }}
+        style={{
+          background: '#3EC68A', border: 'none',
+          borderRadius: isOpen ? '50%' : 99,
+          width: isOpen ? 54 : 'auto', height: 54,
+          padding: isOpen ? 0 : '0 20px 0 14px',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          gap: 9, cursor: 'pointer',
+          transition: 'border-radius 0.25s ease, width 0.25s ease, padding 0.25s ease',
+          flexShrink: 0,
+        }}
+      >
+        {isOpen ? (
+          <X size={20} color="white" strokeWidth={2.5} />
+        ) : (
+          <>
+            <motion.div
+              animate={{ y: [0, -3, 0] }}
+              transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+              style={{ display: 'flex', alignItems: 'center' }}
+            >
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <rect x="4" y="7" width="16" height="12" rx="4" fill="rgba(255,255,255,0.95)" />
+                <circle cx="9" cy="12" r="2" fill="#3EC68A" />
+                <circle cx="15" cy="12" r="2" fill="#3EC68A" />
+                <circle cx="9.7" cy="11.3" r="0.65" fill="white" />
+                <circle cx="15.7" cy="11.3" r="0.65" fill="white" />
+                <path d="M9.5 15.5 Q12 17 14.5 15.5" stroke="#3EC68A" strokeWidth="1.2" strokeLinecap="round" fill="none" />
+                <line x1="12" y1="7" x2="12" y2="4.5" stroke="rgba(255,255,255,0.9)" strokeWidth="1.5" strokeLinecap="round" />
+                <circle cx="12" cy="3.5" r="1.2" fill="rgba(255,255,255,0.9)" />
+                <rect x="2" y="10.5" width="2" height="3" rx="1" fill="rgba(255,255,255,0.7)" />
+                <rect x="20" y="10.5" width="2" height="3" rx="1" fill="rgba(255,255,255,0.7)" />
+              </svg>
+            </motion.div>
+            <span style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: 15, color: 'white', letterSpacing: '0.02em' }}>
+              Ar
+            </span>
+          </>
+        )}
+      </motion.button>
+    </div>
+  );
+}
+
 function StickyBookCTA() {
   const [visible, setVisible] = useState(false);
 
@@ -3389,6 +3515,133 @@ export default function App() {
       document.body.classList.remove('light-mode');
     }
   };
+
+  // n8n chat widget + injected brand styles
+  useEffect(() => {
+    createChat({
+      webhookUrl: 'https://n8n.srv1598153.hstgr.cloud/webhook/d69e43cb-64ab-489f-8600-d7056651df41/chat',
+      initialMessages: [
+        "Hi! I'm Ar, Renthel's AI Assistant 👋",
+        "What's your name and email so Renthel can follow up with you?",
+      ],
+      i18n: {
+        en: {
+          title: 'Ar',
+          subtitle: "Renthel's AI Assistant",
+          footer: '',
+          getStarted: 'Start a conversation',
+          inputPlaceholder: 'Ask me anything…',
+          closeButtonTooltip: 'Close chat',
+        },
+      },
+    });
+
+    const chatStyle = document.createElement('style');
+    chatStyle.id = 'n8n-chat-brand';
+    chatStyle.textContent = `
+      :root {
+        --chat--color--primary: #3EC68A !important;
+        --chat--color--primary-shade-50: #35b07a !important;
+        --chat--color--primary--shade-100: #2d9a6b !important;
+        --chat--color--secondary: #3EC68A !important;
+        --chat--color-secondary-shade-50: #35b07a !important;
+        --chat--color-white: #F2F2F3 !important;
+        --chat--color-light: #0F1014 !important;
+        --chat--color-light-shade-50: #13141A !important;
+        --chat--color-light-shade-100: rgba(255,255,255,0.08) !important;
+        --chat--color-medium: rgba(255,255,255,0.06) !important;
+        --chat--color-dark: #F2F2F3 !important;
+        --chat--color-typing: #3EC68A !important;
+        --chat--border-radius: 12px !important;
+        --chat--font-family: 'Inter', -apple-system, sans-serif !important;
+        --chat--window--width: 380px !important;
+        --chat--window--height: 560px !important;
+        --chat--window--border: 1px solid rgba(255,255,255,0.07) !important;
+        --chat--window--border-radius: 14px !important;
+        --chat--header--background: #0F1014 !important;
+        --chat--header--color: #F2F2F3 !important;
+        --chat--header--border-bottom: 1px solid rgba(255,255,255,0.07) !important;
+        --chat--heading--font-size: 1.05em !important;
+        --chat--subtitle--font-size: 0.78em !important;
+        --chat--body--background: #08090C !important;
+        --chat--message--bot--background: #13141A !important;
+        --chat--message--bot--color: #F2F2F3 !important;
+        --chat--message--bot--border: 1px solid rgba(255,255,255,0.07) !important;
+        --chat--message--user--background: #3EC68A !important;
+        --chat--message--user--color: #ffffff !important;
+        --chat--message--border-radius: 10px !important;
+        --chat--message--font-size: 0.875rem !important;
+        --chat--input--background: #0F1014 !important;
+        --chat--input--text-color: #F2F2F3 !important;
+        --chat--input--container--background: #13141A !important;
+        --chat--input--container--border: 1px solid rgba(255,255,255,0.07) !important;
+        --chat--input--container--border-radius: 10px !important;
+        --chat--input--container--padding: 8px !important;
+        --chat--input--send--button--color: #3EC68A !important;
+        --chat--input--send--button--background: transparent !important;
+        --chat--input--send--button--background-hover: rgba(62,198,138,0.12) !important;
+        --chat--input--send--button--color-hover: #3EC68A !important;
+        --chat--footer--background: #0F1014 !important;
+        --chat--footer--color: #6B6F7A !important;
+        --chat--footer--border-top: 1px solid rgba(255,255,255,0.07) !important;
+        --chat--toggle--background: #3EC68A !important;
+        --chat--toggle--hover--background: #35b07a !important;
+        --chat--toggle--active--background: #2d9a6b !important;
+        --chat--toggle--color: #ffffff !important;
+        --chat--toggle--size: 54px !important;
+        --chat--message--actions--color: #3EC68A !important;
+        --chat--close--button--color-hover: #3EC68A !important;
+      }
+      .chat-window {
+        box-shadow: 0 24px 64px rgba(0,0,0,0.7) !important;
+        font-family: 'Inter', -apple-system, sans-serif !important;
+      }
+      /* hide n8n's default toggle — replaced by ChatWidgetToggle */
+      .chat-window-toggle { display: none !important; }
+      /* position window above our custom button (bottom 24px + height 54px + 14px gap) */
+      .chat-window-wrapper { bottom: 92px !important; right: 24px !important; }
+      .chat-layout .chat-header h1 {
+        font-weight: 600 !important;
+        font-family: 'Inter', sans-serif !important;
+      }
+      .chat-layout .chat-header p {
+        color: #6B6F7A !important;
+        font-family: 'Inter', sans-serif !important;
+      }
+      .chat-inputs textarea {
+        color: #F2F2F3 !important;
+        background: transparent !important;
+      }
+      .chat-inputs textarea::placeholder {
+        color: #6B6F7A !important;
+      }
+      .chat-message.chat-message-from-bot {
+        font-family: 'Inter', sans-serif !important;
+      }
+      .chat-message.chat-message-from-user {
+        font-family: 'Inter', sans-serif !important;
+      }
+      .chat-powered-by { display: none !important; }
+      /* lift chat above sticky Book a Call button (28px bottom + ~44px height + 12px gap) */
+      body.sticky-cta-visible .chat-window-wrapper {
+        bottom: 156px !important;
+      }
+    `;
+    document.head.appendChild(chatStyle);
+    return () => {
+      const el = document.getElementById('n8n-chat-brand');
+      if (el) el.remove();
+    };
+  }, []);
+
+  // Sync sticky-cta-visible class for chat widget positioning
+  useEffect(() => {
+    const onScroll = () => {
+      document.body.classList.toggle('sticky-cta-visible', window.scrollY > window.innerHeight * 0.8);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   // Inject global styles
   useEffect(() => {
@@ -3719,6 +3972,7 @@ export default function App() {
       <ScrollProgress />
       <CursorGlow theme={theme} />
       <StickyBookCTA />
+      <ChatWidgetToggle />
       <Background theme={theme} />
       <Navbar theme={theme} toggleTheme={toggleTheme} />
       <main>
