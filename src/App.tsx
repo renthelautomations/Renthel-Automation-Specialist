@@ -3389,10 +3389,12 @@ function ChatWidgetToggle() {
   }, [isOpen]);
 
   const bottom = ctaVisible ? 88 : 24;
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 480;
+  const right = isMobile ? 16 : 24;
 
   return (
     <div style={{
-      position: 'fixed', bottom, right: 24, zIndex: 10001,
+      position: 'fixed', bottom, right, zIndex: 10001,
       display: 'flex', alignItems: 'center', gap: 12,
       transition: 'bottom 0.3s ease',
     }}>
@@ -3796,6 +3798,36 @@ export default function App() {
         -webkit-text-fill-color: transparent;
         background-clip: text;
         animation: ar-shimmer 4s linear infinite;
+      }
+
+      /* ── mobile: full-width chat window ── */
+      @media (max-width: 480px) {
+        .chat-window-wrapper {
+          right: 0 !important;
+          left: 0 !important;
+          bottom: 86px !important;
+          padding: 0 10px !important;
+          box-sizing: border-box !important;
+          width: 100% !important;
+        }
+        body.sticky-cta-visible .chat-window-wrapper {
+          bottom: 150px !important;
+        }
+        .chat-window {
+          width: 100% !important;
+          max-width: 100% !important;
+          height: calc(100dvh - 140px) !important;
+          max-height: 580px !important;
+          border-radius: 12px !important;
+        }
+        /* header a bit more compact on small screens */
+        .chat-layout .chat-header {
+          padding: 12px 14px !important;
+        }
+        .ar-bot-header-icon svg {
+          width: 40px !important;
+          height: 40px !important;
+        }
       }
     `;
     document.head.appendChild(chatStyle);
