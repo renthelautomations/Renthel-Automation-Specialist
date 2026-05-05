@@ -3331,16 +3331,18 @@ function ChatWidgetToggle() {
       const header = document.querySelector('.chat-layout .chat-header');
       if (!header || header.querySelector('.ar-bot-header-icon')) return;
 
-      // Animate existing title and subtitle text
       const h1 = header.querySelector('h1');
       const p  = header.querySelector('p');
-      if (h1) h1.classList.add('ar-title-anim');
+      const chatHeading = h1 ? (h1.closest('.chat-heading') as HTMLElement | null) || h1.parentElement : null;
 
-      // Wrap subtitle + icon in a row
+      if (h1) h1.classList.add('ar-title-anim');
+      if (p)  p.classList.add('ar-subtitle-anim');
+
+      // Icon (right side, vertically centered)
       const iconWrap = document.createElement('div');
       iconWrap.className = 'ar-bot-header-icon';
       iconWrap.innerHTML = `
-        <svg width="52" height="52" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="4" y="7" width="16" height="12" rx="4" fill="rgba(62,198,138,0.12)" stroke="#3EC68A" stroke-width="1.2"/>
           <circle class="ar-eye-l" cx="9" cy="12" r="2" fill="#3EC68A"/>
           <circle class="ar-eye-r" cx="15" cy="12" r="2" fill="#3EC68A"/>
@@ -3354,16 +3356,20 @@ function ChatWidgetToggle() {
         </svg>
       `;
 
-      if (p && p.parentNode) {
-        const row = document.createElement('div');
-        row.className = 'ar-subtitle-row';
-        p.classList.add('ar-subtitle-anim');
-        p.parentNode.insertBefore(row, p);
-        row.appendChild(p);
-        row.appendChild(iconWrap);
-      } else {
-        header.appendChild(iconWrap);
-      }
+      // Text column: heading div (h1 + close btn) stacked over subtitle p
+      const textCol = document.createElement('div');
+      textCol.className = 'ar-header-text-col';
+      if (chatHeading) textCol.appendChild(chatHeading);
+      else if (h1) textCol.appendChild(h1);
+      if (p) textCol.appendChild(p);
+
+      // Main row: text col left, icon right (vertically centered)
+      const mainRow = document.createElement('div');
+      mainRow.className = 'ar-header-main-row';
+      mainRow.appendChild(textCol);
+      mainRow.appendChild(iconWrap);
+
+      header.appendChild(mainRow);
     };
     const t = setTimeout(inject, 250);
     return () => clearTimeout(t);
@@ -3645,25 +3651,42 @@ export default function App() {
       .chat-window-toggle { display: none !important; }
       /* position window above our custom button (bottom 24px + height 54px + 14px gap) */
       .chat-window-wrapper { bottom: 92px !important; right: 24px !important; }
-      /* ── header spacing ── */
+      /* ── header layout ── */
       .chat-layout .chat-header {
         padding: 14px 16px !important;
-        gap: 4px !important;
+        gap: 0 !important;
+      }
+      /* main row: text left, icon right, both vertically centered */
+      .ar-header-main-row {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        width: 100% !important;
+        gap: 10px !important;
+      }
+      /* text column: heading (h1 + close btn) stacked tight over subtitle */
+      .ar-header-text-col {
+        flex: 1 !important;
+        min-width: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 1px !important;
+      }
+      .chat-layout .chat-header .chat-heading {
+        margin: 0 !important;
+        padding: 0 !important;
       }
       .chat-layout .chat-header h1 {
         font-weight: 600 !important;
         font-family: 'Inter', sans-serif !important;
         margin: 0 !important;
-        line-height: 1.3 !important;
+        line-height: 1.25 !important;
       }
       .chat-layout .chat-header p {
         color: #6B6F7A !important;
         font-family: 'Inter', sans-serif !important;
         margin: 0 !important;
-        line-height: 1.3 !important;
-      }
-      .ar-subtitle-row {
-        margin-top: 2px !important;
+        line-height: 1.25 !important;
       }
       /* ── message area spacing ── */
       .chat-messages-list {
@@ -3735,12 +3758,6 @@ export default function App() {
       }
 
       /* ── animated robot icon in chat header ── */
-      /* subtitle row: text left, icon right */
-      .ar-subtitle-row {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-      }
       @keyframes ar-header-float {
         0%, 100% { transform: translateY(0px); }
         50%       { transform: translateY(-5px); }
@@ -3759,7 +3776,10 @@ export default function App() {
       }
       .ar-bot-header-icon {
         animation: ar-header-float 3s ease-in-out infinite;
-        flex-shrink: 0;
+        flex-shrink: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
       }
       .ar-eye-l {
         transform-origin: 9px 12px;
