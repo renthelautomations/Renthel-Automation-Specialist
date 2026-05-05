@@ -3728,9 +3728,9 @@ export default function App() {
         <TechStack theme={theme} />
         <CaseStudies theme={theme} />
         <AutomationShowcase theme={theme} />
+        <ROICalculator />
         <Process />
         <Testimonials />
-        <ROICalculator />
         <GoogleCalendar />
         <FAQ />
       </main>
